@@ -1,0 +1,108 @@
+/* MapBackground — CSS gradient map simulation
+   Will be replaced with a real Mapbox map later. */
+
+.map-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+/* ── Terrain layer ────────────────────────────────── */
+.map-terrain {
+  position: absolute;
+  inset: 0;
+  background:
+    /* Landmasses — warm watercolor feel */
+    radial-gradient(ellipse 22% 32% at 54% 36%, rgba(195, 175, 145, 0.6) 0%, transparent 100%),
+    radial-gradient(ellipse 26% 24% at 70% 30%, rgba(188, 168, 138, 0.5) 0%, transparent 100%),
+    radial-gradient(ellipse 16% 38% at 30% 38%, rgba(200, 180, 148, 0.55) 0%, transparent 100%),
+    radial-gradient(ellipse 12% 22% at 34% 58%, rgba(185, 165, 135, 0.4) 0%, transparent 100%),
+    radial-gradient(ellipse 10% 8% at 80% 60%, rgba(190, 170, 140, 0.35) 0%, transparent 100%),
+    /* Subtle green patches */
+    radial-gradient(ellipse 10% 14% at 56% 40%, rgba(140, 158, 120, 0.15) 0%, transparent 100%),
+    radial-gradient(ellipse 8% 10% at 32% 33%, rgba(140, 158, 120, 0.12) 0%, transparent 100%),
+    radial-gradient(ellipse 6% 8% at 68% 35%, rgba(140, 158, 120, 0.1) 0%, transparent 100%),
+    /* Warm blue watercolor tracks */
+    radial-gradient(ellipse 4% 20% at 48% 30%, rgba(100, 130, 180, 0.06) 0%, transparent 100%),
+    radial-gradient(ellipse 3% 16% at 52% 45%, rgba(180, 140, 90, 0.05) 0%, transparent 100%),
+    /* Ocean */
+    linear-gradient(180deg, #e5e0d5 0%, #e8e3d8 40%, #eae5da 100%);
+}
+
+[data-theme="dark"] .map-terrain {
+  background:
+    radial-gradient(ellipse 22% 32% at 54% 36%, rgba(40, 35, 28, 0.8) 0%, transparent 100%),
+    radial-gradient(ellipse 26% 24% at 70% 30%, rgba(38, 33, 26, 0.6) 0%, transparent 100%),
+    radial-gradient(ellipse 16% 38% at 30% 38%, rgba(42, 37, 30, 0.7) 0%, transparent 100%),
+    radial-gradient(ellipse 12% 22% at 34% 58%, rgba(35, 30, 24, 0.5) 0%, transparent 100%),
+    radial-gradient(ellipse 10% 8% at 80% 60%, rgba(38, 33, 26, 0.4) 0%, transparent 100%),
+    linear-gradient(180deg, #0c0c10 0%, #0a0a0e 100%);
+}
+
+/* ── Coastlines layer ─────────────────────────────── */
+.map-coastlines {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 22% 32% at 54% 36%, transparent 95%, rgba(195, 175, 145, 0.15) 100%),
+    radial-gradient(ellipse 26% 24% at 70% 30%, transparent 95%, rgba(188, 168, 138, 0.12) 100%),
+    radial-gradient(ellipse 16% 38% at 30% 38%, transparent 95%, rgba(200, 180, 148, 0.12) 100%);
+  pointer-events: none;
+}
+
+[data-theme="dark"] .map-coastlines {
+  background:
+    radial-gradient(ellipse 22% 32% at 54% 36%, transparent 95%, rgba(60, 55, 45, 0.2) 100%),
+    radial-gradient(ellipse 26% 24% at 70% 30%, transparent 95%, rgba(55, 50, 42, 0.15) 100%),
+    radial-gradient(ellipse 16% 38% at 30% 38%, transparent 95%, rgba(60, 55, 45, 0.15) 100%);
+}
+
+/* ── Gridlines layer ──────────────────────────────── */
+.map-gridlines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.012) 1px, transparent 1px);
+  background-size: 120px 120px;
+  pointer-events: none;
+}
+
+[data-theme="dark"] .map-gridlines {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 120px 120px;
+}
+
+/* ── Map pins ─────────────────────────────────────── */
+.map-pin {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--atlas-charcoal);
+  opacity: 0.2;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.map-pin:hover {
+  opacity: 0.5;
+  transform: scale(1.4);
+}
+
+[data-theme="dark"] .map-pin {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* ── Tour button dark mode ────────────────────────── */
+[data-theme="dark"] .tour-btn {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-theme="dark"] .tour-btn:hover {
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
