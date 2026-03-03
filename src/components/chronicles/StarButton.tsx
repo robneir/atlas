@@ -2,24 +2,43 @@
 
 import { useState } from "react";
 import { Star } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 interface StarButtonProps {
   count: number;
   starred?: boolean;
   onToggle?: () => void;
+  itemId?: string;
 }
 
-export function StarButton({ count, starred = false, onToggle }: StarButtonProps) {
+export function StarButton({ count, starred = false, onToggle, itemId }: StarButtonProps) {
   const [hovered, setHovered] = useState(false);
+  const { user, isSignedIn, toggleStar, openAuthModal } = useAuth();
 
-  const isActive = starred || hovered;
+  // When itemId is provided, derive star state from auth context
+  const isStarredByUser = itemId ? (user?.starredItems.includes(itemId) ?? false) : starred;
+  const displayCount = itemId ? count + (isStarredByUser ? 1 : 0) : count;
+
+  const isActive = isStarredByUser || hovered;
+
+  function handleClick() {
+    if (itemId) {
+      if (!isSignedIn) {
+        openAuthModal();
+        return;
+      }
+      toggleStar(itemId);
+    } else {
+      onToggle?.();
+    }
+  }
 
   return (
     <button
       type="button"
-      aria-label={`${starred ? "Unstar" : "Star"} (${count.toLocaleString()} stars)`}
-      aria-pressed={starred}
-      onClick={onToggle}
+      aria-label={`${isStarredByUser ? "Unstar" : "Star"} (${displayCount.toLocaleString()} stars)`}
+      aria-pressed={isStarredByUser}
+      onClick={handleClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className="font-sans"
@@ -36,7 +55,7 @@ export function StarButton({ count, starred = false, onToggle }: StarButtonProps
     >
       <Star
         size={14}
-        fill={starred ? "var(--atlas-accent)" : "none"}
+        fill={isStarredByUser ? "var(--atlas-accent)" : "none"}
         stroke={isActive ? "var(--atlas-accent)" : "var(--atlas-mid-grey)"}
         style={{ transition: "all 0.15s" }}
       />
@@ -48,7 +67,7 @@ export function StarButton({ count, starred = false, onToggle }: StarButtonProps
           transition: "color 0.15s",
         }}
       >
-        {count.toLocaleString()}
+        {displayCount.toLocaleString()}
       </span>
     </button>
   );
