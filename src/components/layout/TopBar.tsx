@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Globe, BookOpen, MessageCircle, Compass, Search, X, Users } from "lucide-react";
+import { Globe, BookOpen, MessageCircle, Compass, Search, X, Users, LogOut } from "lucide-react";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { useAuth } from "@/hooks/useAuth";
 
 const navItems = [
   { label: "Atlas", href: "/", icon: Globe },
@@ -14,14 +15,37 @@ const navItems = [
   { label: "Community", href: "https://discord.gg/pbbPsQMhdR", icon: Users, external: true },
 ] as const;
 
+/* ── Helper functions ─────────────────────────────────── */
+
+function getInitials(name: string): string {
+  return name.split(" ").map(p => p[0]).join("").toUpperCase().slice(0, 2);
+}
+
+function getAvatarColor(name: string): string {
+  const colors = ["#8b6914", "#cd853f", "#8b7355", "#6b8e6b", "#7b9eb8", "#8fa4c4", "#b088c4"];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  return colors[Math.abs(hash) % colors.length];
+}
+
+const TIER_COLORS: Record<string, string> = {
+  explorer: "var(--atlas-mid-grey)",
+  contributor: "#3b82f6",
+  historian: "#f59e0b",
+};
+
 export function TopBar() {
   const pathname = usePathname();
+  const { user, isSignedIn, signOut, openAuthModal } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const avatarMenuRef = useRef<HTMLDivElement>(null);
 
-  // Close mobile menu on route change
+  // Close menus on route change
   useEffect(() => {
     setMobileMenuOpen(false);
+    setAvatarMenuOpen(false);
   }, [pathname]);
 
   // Close mobile menu on outside click
@@ -38,17 +62,100 @@ export function TopBar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [mobileMenuOpen]);
 
+  // Close avatar menu on outside click
+  useEffect(() => {
+    if (!avatarMenuOpen) return;
+
+    function handleClickOutside(e: MouseEvent) {
+      if (avatarMenuRef.current && !avatarMenuRef.current.contains(e.target as Node)) {
+        setAvatarMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [avatarMenuOpen]);
+
   // Close on Escape key
   useEffect(() => {
-    if (!mobileMenuOpen) return;
+    if (!mobileMenuOpen && !avatarMenuOpen) return;
 
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") setMobileMenuOpen(false);
+      if (e.key === "Escape") {
+        setMobileMenuOpen(false);
+        setAvatarMenuOpen(false);
+      }
     }
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, avatarMenuOpen]);
+
+  // Mutual exclusion: close avatar when hamburger opens and vice versa
+  function openMobileMenu() {
+    setAvatarMenuOpen(false);
+    setMobileMenuOpen((v) => !v);
+  }
+
+  function toggleAvatarMenu() {
+    setMobileMenuOpen(false);
+    setAvatarMenuOpen((v) => !v);
+  }
+
+  function handleContributeClick() {
+    if (!isSignedIn) {
+      openAuthModal();
+    } else {
+      window.dispatchEvent(new CustomEvent("atlas:open-contribute"));
+    }
+  }
+
+  /* ── Tier badge component ─────────────────────────────── */
+  const TierBadge = ({ role }: { role: string }) => (
+    <span
+      style={{
+        display: "inline-block",
+        padding: "2px 8px",
+        borderRadius: 9999,
+        fontSize: 11,
+        fontWeight: 600,
+        fontFamily: "var(--font-source-sans), sans-serif",
+        color: "#fff",
+        backgroundColor: TIER_COLORS[role] || "var(--atlas-mid-grey)",
+        lineHeight: "16px",
+        textTransform: "capitalize",
+      }}
+    >
+      {role}
+    </span>
+  );
+
+  /* ── Avatar component ─────────────────────────────────── */
+  const Avatar = ({ size = 36 }: { size?: number }) => {
+    if (!user) return null;
+    return (
+      <div
+        style={{
+          width: size,
+          height: size,
+          borderRadius: "50%",
+          backgroundColor: getAvatarColor(user.displayName),
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#fff",
+          fontSize: size * 0.38,
+          fontWeight: 700,
+          fontFamily: "var(--font-source-sans), sans-serif",
+          letterSpacing: "0.02em",
+          flexShrink: 0,
+          cursor: "pointer",
+        }}
+      >
+        {getInitials(user.displayName)}
+      </div>
+    );
+  };
 
   return (
     <header
@@ -60,17 +167,38 @@ export function TopBar() {
         borderBottom: "1px solid var(--topbar-border, rgba(0,0,0,0.06))",
       }}
     >
-      {/* Logo */}
-      <Link
-        href="/"
-        className="font-serif text-[22px] md:text-[26px] font-black mr-4 md:mr-12 cursor-pointer"
-        style={{
-          color: "var(--atlas-black)",
-          letterSpacing: "-0.01em",
-        }}
-      >
-        Atlas
-      </Link>
+      {/* Official site badge + Logo */}
+      <div className="flex items-center gap-3 md:gap-4 mr-4 md:mr-12">
+        <span
+          className="hidden md:flex items-center gap-[5px] text-[11px] font-medium shrink-0"
+          style={{
+            color: "var(--atlas-dark-grey)",
+            fontFamily: "var(--font-source-sans), sans-serif",
+            letterSpacing: "0.01em",
+          }}
+        >
+          <span className="text-[13px] leading-none" aria-label="US flag">🇺🇸</span>
+          An official website of Atlas
+        </span>
+        <span
+          className="hidden md:block shrink-0"
+          style={{
+            width: 1,
+            height: 20,
+            background: "var(--atlas-light-grey)",
+          }}
+        />
+        <Link
+          href="/"
+          className="font-serif text-[22px] md:text-[26px] font-black cursor-pointer"
+          style={{
+            color: "var(--atlas-black)",
+            letterSpacing: "-0.01em",
+          }}
+        >
+          Atlas
+        </Link>
+      </div>
 
       {/* Nav Items - hidden on mobile */}
       <nav aria-label="Main navigation" className="hidden md:flex items-center gap-2 mr-auto">
@@ -79,7 +207,7 @@ export function TopBar() {
           const isActive =
             !isExternal && (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
-          const className = "flex items-center gap-[7px] px-4 py-2 text-[15px] transition-colors duration-150";
+          const className = "flex items-center gap-[7px] px-4 py-2 text-[15px] cursor-pointer transition-colors duration-150";
           const style = {
             fontFamily: "var(--font-source-sans), sans-serif",
             fontWeight: isActive ? 700 : 500,
@@ -195,6 +323,141 @@ export function TopBar() {
           <Search className="w-[16px] h-[16px]" />
         </button>
 
+        {/* Sign In Button (desktop, signed out) */}
+        {!isSignedIn && (
+          <button
+            type="button"
+            className="hidden lg:flex items-center gap-[6px] rounded-full text-[14px] font-semibold cursor-pointer transition-all duration-150"
+            style={{
+              padding: "8px 18px",
+              border: "1.5px solid var(--atlas-light-grey)",
+              background: "transparent",
+              color: "var(--atlas-dark-grey)",
+              fontFamily: "var(--font-source-sans), sans-serif",
+              whiteSpace: "nowrap",
+            }}
+            onClick={openAuthModal}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "var(--atlas-mid-grey)";
+              e.currentTarget.style.color = "var(--atlas-black)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "var(--atlas-light-grey)";
+              e.currentTarget.style.color = "var(--atlas-dark-grey)";
+            }}
+          >
+            Sign In
+          </button>
+        )}
+
+        {/* Avatar with dropdown (desktop, signed in) */}
+        {isSignedIn && user && (
+          <div ref={avatarMenuRef} className="relative hidden lg:block">
+            <button
+              type="button"
+              aria-label="User menu"
+              aria-expanded={avatarMenuOpen}
+              aria-haspopup="true"
+              onClick={toggleAvatarMenu}
+              className="flex items-center cursor-pointer"
+              style={{ background: "none", border: "none", padding: 0 }}
+            >
+              <Avatar size={36} />
+            </button>
+
+            {avatarMenuOpen && (
+              <div
+                className="absolute right-0 top-[calc(100%+8px)]"
+                style={{
+                  width: 240,
+                  borderRadius: 12,
+                  backgroundColor: "var(--atlas-white)",
+                  boxShadow: "var(--atlas-shadow-lg)",
+                  border: "1px solid var(--atlas-light-grey)",
+                  overflow: "hidden",
+                  animation: "mobileMenuFadeIn 0.15s ease-out",
+                }}
+              >
+                {/* User info header */}
+                <div
+                  className="flex items-center gap-3"
+                  style={{ padding: "14px 16px" }}
+                >
+                  <Avatar size={32} />
+                  <div className="flex flex-col gap-1 min-w-0">
+                    <span
+                      className="font-sans text-[14px] font-semibold truncate"
+                      style={{ color: "var(--atlas-black)" }}
+                    >
+                      {user.displayName}
+                    </span>
+                    <TierBadge role={user.role} />
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div style={{ height: 1, backgroundColor: "var(--atlas-light-grey)" }} />
+
+                {/* Profile link */}
+                <Link
+                  href="/profile"
+                  className="flex items-center gap-3 font-sans text-[14px] cursor-pointer transition-colors duration-150"
+                  style={{
+                    padding: "12px 16px",
+                    fontWeight: 500,
+                    color: "var(--atlas-dark-grey)",
+                  }}
+                  onClick={() => setAvatarMenuOpen(false)}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "var(--atlas-cream)";
+                    e.currentTarget.style.color = "var(--atlas-black)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "transparent";
+                    e.currentTarget.style.color = "var(--atlas-dark-grey)";
+                  }}
+                >
+                  <Users className="w-[15px] h-[15px]" />
+                  Profile
+                </Link>
+
+                {/* Divider */}
+                <div style={{ height: 1, backgroundColor: "var(--atlas-light-grey)" }} />
+
+                {/* Sign out */}
+                <button
+                  type="button"
+                  className="flex items-center gap-3 font-sans text-[14px] cursor-pointer transition-colors duration-150 w-full"
+                  style={{
+                    padding: "12px 16px",
+                    fontWeight: 500,
+                    color: "var(--atlas-dark-grey)",
+                    background: "none",
+                    border: "none",
+                    textAlign: "left",
+                    fontFamily: "var(--font-source-sans), sans-serif",
+                  }}
+                  onClick={() => {
+                    setAvatarMenuOpen(false);
+                    signOut();
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "var(--atlas-cream)";
+                    e.currentTarget.style.color = "var(--atlas-black)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "transparent";
+                    e.currentTarget.style.color = "var(--atlas-dark-grey)";
+                  }}
+                >
+                  <LogOut className="w-[15px] h-[15px]" />
+                  Sign Out
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Choose Era Button - hidden on mobile */}
         <button
           type="button"
@@ -230,6 +493,7 @@ export function TopBar() {
             fontFamily: "var(--font-source-sans), sans-serif",
             whiteSpace: "nowrap",
           }}
+          onClick={handleContributeClick}
           onMouseEnter={(e) => {
             e.currentTarget.style.background = "var(--atlas-accent-hover)";
           }}
@@ -252,7 +516,7 @@ export function TopBar() {
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
             aria-haspopup="true"
-            onClick={() => setMobileMenuOpen((v) => !v)}
+            onClick={openMobileMenu}
             className="flex flex-col items-center justify-center w-10 h-10 md:w-9 md:h-9 cursor-pointer rounded-full"
             style={{
               border: "1.5px solid var(--atlas-light-grey)",
@@ -306,6 +570,28 @@ export function TopBar() {
                 animation: "mobileMenuFadeIn 0.15s ease-out",
               }}
             >
+              {/* Signed-in user info row at top */}
+              {isSignedIn && user && (
+                <>
+                  <div
+                    className="flex items-center gap-3"
+                    style={{ padding: "14px 16px" }}
+                  >
+                    <Avatar size={32} />
+                    <div className="flex flex-col gap-1 min-w-0">
+                      <span
+                        className="font-sans text-[14px] font-semibold truncate"
+                        style={{ color: "var(--atlas-black)" }}
+                      >
+                        {user.displayName}
+                      </span>
+                      <TierBadge role={user.role} />
+                    </div>
+                  </div>
+                  <div style={{ height: 1, backgroundColor: "var(--atlas-light-grey)" }} />
+                </>
+              )}
+
               {/* Navigation links */}
               <nav aria-label="Mobile navigation" className="py-2">
                 {navItems.map(({ label, href, icon: Icon, ...rest }) => {
@@ -314,7 +600,7 @@ export function TopBar() {
                     !isExternal && (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
                   const commonProps = {
-                    className: "flex items-center gap-3 font-sans text-[15px] transition-colors duration-150",
+                    className: "flex items-center gap-3 font-sans text-[15px] cursor-pointer transition-colors duration-150",
                     style: {
                       padding: "12px 20px",
                       fontWeight: isActive ? 700 : 500,
@@ -354,6 +640,27 @@ export function TopBar() {
                     </Link>
                   );
                 })}
+
+                {/* Profile link (signed in only) */}
+                {isSignedIn && (
+                  <Link
+                    href="/profile"
+                    className="flex items-center gap-3 font-sans text-[15px] cursor-pointer transition-colors duration-150"
+                    style={{
+                      padding: "12px 20px",
+                      fontWeight: pathname === "/profile" ? 700 : 500,
+                      color: pathname === "/profile"
+                        ? "var(--atlas-black)"
+                        : "var(--atlas-dark-grey)",
+                      backgroundColor: pathname === "/profile"
+                        ? "var(--atlas-cream)"
+                        : "transparent",
+                    }}
+                  >
+                    <Users className="w-[16px] h-[16px]" />
+                    Profile
+                  </Link>
+                )}
               </nav>
 
               {/* Divider */}
@@ -361,6 +668,27 @@ export function TopBar() {
 
               {/* Action buttons in dropdown */}
               <div className="p-3 flex flex-col gap-2">
+                {/* Sign In button (signed out only) */}
+                {!isSignedIn && (
+                  <button
+                    type="button"
+                    className="flex items-center justify-center gap-2 rounded-full text-[14px] font-semibold cursor-pointer transition-all duration-150 w-full"
+                    style={{
+                      padding: "10px 18px",
+                      border: "1.5px solid var(--atlas-light-grey)",
+                      background: "transparent",
+                      color: "var(--atlas-dark-grey)",
+                      fontFamily: "var(--font-source-sans), sans-serif",
+                    }}
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      openAuthModal();
+                    }}
+                  >
+                    Sign In
+                  </button>
+                )}
+
                 <button
                   type="button"
                   className="flex items-center justify-center gap-2 rounded-full text-[14px] font-semibold cursor-pointer transition-all duration-150 w-full"
@@ -384,9 +712,35 @@ export function TopBar() {
                     border: "none",
                     fontFamily: "var(--font-source-sans), sans-serif",
                   }}
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    handleContributeClick();
+                  }}
                 >
                   Contribute
                 </button>
+
+                {/* Sign Out button (signed in only) */}
+                {isSignedIn && (
+                  <button
+                    type="button"
+                    className="flex items-center justify-center gap-2 rounded-full text-[14px] font-semibold cursor-pointer transition-all duration-150 w-full"
+                    style={{
+                      padding: "10px 18px",
+                      border: "1.5px solid var(--atlas-light-grey)",
+                      background: "transparent",
+                      color: "var(--atlas-dark-grey)",
+                      fontFamily: "var(--font-source-sans), sans-serif",
+                    }}
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      signOut();
+                    }}
+                  >
+                    <LogOut className="w-[14px] h-[14px]" />
+                    Sign Out
+                  </button>
+                )}
               </div>
 
               {/* Divider */}
