@@ -1,8 +1,9 @@
 import { MapPin, Calendar } from "lucide-react";
-import type { User } from "@/data/types";
+import type { User, AuthUser, UserRole } from "@/data/types";
 
 interface ProfileHeaderProps {
   user: User;
+  authUser?: AuthUser | null;
 }
 
 function getInitials(name: string): string {
@@ -39,7 +40,248 @@ function formatJoinDate(dateString: string): string {
   });
 }
 
-export function ProfileHeader({ user }: ProfileHeaderProps) {
+const TIER_CONFIG: Record<UserRole, { label: string; color: string }> = {
+  explorer: { label: "Explorer", color: "var(--atlas-mid-grey)" },
+  contributor: { label: "Contributor", color: "#3b82f6" },
+  historian: { label: "Historian", color: "#f59e0b" },
+};
+
+function TierBadge({ role }: { role: UserRole }) {
+  const tier = TIER_CONFIG[role];
+  return (
+    <span
+      className="font-sans"
+      style={{
+        display: "inline-block",
+        fontSize: 11,
+        fontWeight: 600,
+        textTransform: "uppercase",
+        color: "#fff",
+        backgroundColor: tier.color,
+        padding: "3px 10px",
+        borderRadius: 9999,
+        marginLeft: 10,
+        verticalAlign: "middle",
+        lineHeight: 1.4,
+      }}
+    >
+      {tier.label}
+    </span>
+  );
+}
+
+function TierProgressionCard({ authUser }: { authUser: AuthUser }) {
+  const role = authUser.role;
+  const tier = TIER_CONFIG[role];
+
+  return (
+    <div
+      className="font-sans"
+      style={{
+        backgroundColor: "#fff",
+        borderRadius: 10,
+        boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
+        padding: 20,
+        marginTop: 24,
+      }}
+    >
+      {/* Current tier indicator */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          marginBottom: 14,
+        }}
+      >
+        <span
+          style={{
+            width: 10,
+            height: 10,
+            borderRadius: "50%",
+            backgroundColor: tier.color,
+            flexShrink: 0,
+          }}
+        />
+        <span
+          style={{
+            fontSize: 14,
+            fontWeight: 600,
+            color: "var(--atlas-black)",
+          }}
+        >
+          {tier.label}
+        </span>
+      </div>
+
+      {role === "explorer" && (
+        <ExplorerProgression authUser={authUser} />
+      )}
+      {role === "contributor" && (
+        <ContributorProgression authUser={authUser} />
+      )}
+      {role === "historian" && (
+        <HistorianMaxTier authUser={authUser} />
+      )}
+    </div>
+  );
+}
+
+function ExplorerProgression({ authUser }: { authUser: AuthUser }) {
+  const starred = authUser.stats.starredSuggestions;
+  const target = 5;
+  const pct = Math.min((starred / target) * 100, 100);
+
+  return (
+    <>
+      <p
+        style={{
+          fontSize: 13,
+          color: "var(--atlas-dark-grey)",
+          margin: 0,
+          marginBottom: 10,
+        }}
+      >
+        {starred}/{target} starred suggestions to Contributor
+      </p>
+
+      {/* Progress bar */}
+      <div
+        style={{
+          height: 8,
+          borderRadius: 9999,
+          backgroundColor: "var(--atlas-light-grey)",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            height: "100%",
+            width: `${pct}%`,
+            borderRadius: 9999,
+            backgroundColor: "#3b82f6",
+            transition: "width 0.3s ease",
+          }}
+        />
+      </div>
+
+      <p
+        style={{
+          fontSize: 12,
+          color: "var(--atlas-mid-grey)",
+          margin: 0,
+          marginTop: 10,
+        }}
+      >
+        Keep exploring and contributing to unlock more abilities!
+      </p>
+    </>
+  );
+}
+
+function ContributorProgression({ authUser }: { authUser: AuthUser }) {
+  const chronicles = authUser.stats.chroniclesCreated;
+  const starsReceived = authUser.stats.starsReceived;
+
+  return (
+    <>
+      <p
+        style={{
+          fontSize: 13,
+          color: "var(--atlas-dark-grey)",
+          margin: 0,
+          marginBottom: 8,
+        }}
+      >
+        Apply for Verified Historian status
+      </p>
+
+      <ul
+        style={{
+          fontSize: 13,
+          color: "var(--atlas-dark-grey)",
+          margin: 0,
+          marginBottom: 14,
+          paddingLeft: 18,
+          lineHeight: 1.7,
+        }}
+      >
+        <li>
+          10+ chronicles{" "}
+          <span style={{ color: chronicles >= 10 ? "#22c55e" : "var(--atlas-mid-grey)" }}>
+            ({chronicles}/10)
+          </span>
+        </li>
+        <li>
+          100+ stars received{" "}
+          <span style={{ color: starsReceived >= 100 ? "#22c55e" : "var(--atlas-mid-grey)" }}>
+            ({starsReceived}/100)
+          </span>
+        </li>
+      </ul>
+
+      <button
+        className="font-sans"
+        style={{
+          fontSize: 13,
+          fontWeight: 600,
+          color: "#3b82f6",
+          backgroundColor: "transparent",
+          border: "1.5px solid #3b82f6",
+          borderRadius: 9999,
+          padding: "6px 20px",
+          cursor: "pointer",
+        }}
+      >
+        Apply
+      </button>
+    </>
+  );
+}
+
+function HistorianMaxTier({ authUser }: { authUser: AuthUser }) {
+  return (
+    <>
+      <p
+        style={{
+          fontSize: 14,
+          fontWeight: 600,
+          color: "#f59e0b",
+          margin: 0,
+          marginBottom: 6,
+        }}
+      >
+        Verified Historian — Highest Tier
+      </p>
+
+      <p
+        style={{
+          fontSize: 13,
+          color: "var(--atlas-dark-grey)",
+          margin: 0,
+          marginBottom: 8,
+          lineHeight: 1.5,
+        }}
+      >
+        Your contributions help preserve history for future generations.
+      </p>
+
+      <p
+        style={{
+          fontSize: 12,
+          color: "var(--atlas-mid-grey)",
+          margin: 0,
+        }}
+      >
+        {authUser.stats.chroniclesCreated} chronicles &middot;{" "}
+        {authUser.stats.starsReceived.toLocaleString()} stars received &middot;{" "}
+        {authUser.stats.totalContributions.toLocaleString()} total contributions
+      </p>
+    </>
+  );
+}
+
+export function ProfileHeader({ user, authUser }: ProfileHeaderProps) {
   const initials = getInitials(user.displayName);
   const avatarColor = getAvatarColor(user.displayName);
 
@@ -69,7 +311,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
 
       {/* Info */}
       <div style={{ flex: 1, minWidth: 0 }}>
-        {/* Display name */}
+        {/* Display name + tier badge */}
         <h1
           className="font-serif"
           style={{
@@ -81,6 +323,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
           }}
         >
           {user.displayName}
+          {authUser && <TierBadge role={authUser.role} />}
         </h1>
 
         {/* Username */}
@@ -217,6 +460,9 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
             </span>
           </div>
         </div>
+
+        {/* Tier Progression Card */}
+        {authUser && <TierProgressionCard authUser={authUser} />}
       </div>
     </div>
   );
