@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "@/hooks/useAuth";
 import { MOCK_AUTH_USERS } from "@/data/mock-auth-users";
+import { AuthModal } from "@/components/auth/AuthModal";
 import type { AuthUser } from "@/data/types";
 
 const USERS_KEY = "atlas-auth-users";
@@ -270,6 +271,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     <AuthContext value={value}>
       <AuthModalContext value={modalValue}>
         {children}
+        <AuthModal />
       </AuthModalContext>
     </AuthContext>
   );
