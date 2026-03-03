@@ -70,3 +70,59 @@ export interface Connection {
   toEventId: string;
   description: string;
 }
+
+/* ── Auth & Profile Types ─────────────────────────────── */
+
+export type UserRole = "explorer" | "contributor" | "historian";
+
+export interface DailyActivity {
+  date: string; // YYYY-MM-DD
+  count: number;
+}
+
+export interface MonthlyStats {
+  month: string; // YYYY-MM
+  starsReceived: number;
+  votesCast: number;
+}
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  password: string; // plain text (mock only)
+  displayName: string;
+  username: string;
+  avatarUrl?: string;
+  bio: string;
+  location: string;
+  role: UserRole;
+  joinedAt: string;
+  stats: {
+    totalContributions: number;
+    starsReceived: number;
+    votesCast: number;
+    currentStreak: number;
+    starredSuggestions: number;
+    chroniclesCreated: number;
+  };
+  activityHistory: DailyActivity[];
+  monthlyStats: MonthlyStats[];
+  contributionBreakdown: {
+    votes: number;
+    stars: number;
+    corrections: number;
+    chronicles: number;
+  };
+  milestones: string[];
+  starredItems: string[];
+  votes: Record<string, "up" | "down">;
+}
+
+export interface Milestone {
+  id: string;
+  label: string;
+  description: string;
+  icon: string;
+  threshold?: number;
+  field?: string;
+}
