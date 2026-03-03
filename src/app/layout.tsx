@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Source_Sans_3, Noto_Serif } from "next/font/google";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
+import { AuthProvider } from "@/components/auth/AuthProvider";
 import { TopBar } from "@/components/layout/TopBar";
 import { SearchWrapper } from "@/components/layout/SearchModal";
 import { OnboardingWrapper } from "@/components/onboarding/OnboardingWrapper";
@@ -43,16 +44,18 @@ export default function RootLayout({
     >
       <body className="antialiased">
           <ThemeProvider>
-            <a
-              href="#main-content"
-              className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[999] focus:rounded-md focus:bg-[var(--atlas-accent)] focus:px-4 focus:py-2 focus:text-white focus:font-semibold focus:text-sm"
-            >
-              Skip to main content
-            </a>
-            <OnboardingWrapper />
-            <TopBar />
-            <SearchWrapper />
-            <main id="main-content" className="pt-[54px]">{children}</main>
+            <AuthProvider>
+              <a
+                href="#main-content"
+                className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[999] focus:rounded-md focus:bg-[var(--atlas-accent)] focus:px-4 focus:py-2 focus:text-white focus:font-semibold focus:text-sm"
+              >
+                Skip to main content
+              </a>
+              <OnboardingWrapper />
+              <TopBar />
+              <SearchWrapper />
+              <main id="main-content" className="pt-[54px]">{children}</main>
+            </AuthProvider>
           </ThemeProvider>
         </body>
     </html>
