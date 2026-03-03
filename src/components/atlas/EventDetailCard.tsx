@@ -4,6 +4,7 @@ import { X, MapPin } from "lucide-react";
 import type { HistoricalEvent } from "@/data/types";
 import { FIGURES } from "@/data/figures";
 import { EraTag } from "@/components/shared/EraTag";
+import { VoteButtons } from "@/components/shared/VoteButtons";
 
 interface EventDetailCardProps {
   event: HistoricalEvent;
@@ -162,6 +163,11 @@ export function EventDetailCard({ event, onClose }: EventDetailCardProps) {
             Chat with {relatedFigure.name}
           </button>
         )}
+      </div>
+
+      {/* Vote / interaction row */}
+      <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--atlas-light-grey)" }}>
+        <VoteButtons itemId={event.id} initialScore={Math.abs(event.year % 50) + 10} />
       </div>
     </div>
   );
