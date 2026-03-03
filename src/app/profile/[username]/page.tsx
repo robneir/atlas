@@ -9,6 +9,11 @@ import { useAuth } from "@/hooks/useAuth";
 import { ProfileHeader } from "@/components/community/ProfileHeader";
 import { BadgeDisplay } from "@/components/community/BadgeDisplay";
 import { ContributionGrid } from "@/components/community/ContributionGrid";
+import StatCards from "@/components/profile/StatCards";
+import ContributionHeatmap from "@/components/profile/ContributionHeatmap";
+import ImpactChart from "@/components/profile/ImpactChart";
+import BreakdownChart from "@/components/profile/BreakdownChart";
+import MilestoneBadges from "@/components/profile/MilestoneBadges";
 import Link from "next/link";
 import type { AuthUser, User } from "@/data/types";
 
@@ -148,6 +153,27 @@ export default function ProfilePage() {
       >
         <ProfileHeader user={user} authUser={authUser} />
         <BadgeDisplay badges={user.badges} />
+        {authUser && (
+          <>
+            <div style={{ marginBottom: 24 }}>
+              <StatCards stats={authUser.stats} />
+            </div>
+            <div style={{ marginBottom: 24 }}>
+              <ContributionHeatmap activityHistory={authUser.activityHistory} currentStreak={authUser.stats.currentStreak} />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4" style={{ marginBottom: 24 }}>
+              <div className="md:col-span-2">
+                <ImpactChart monthlyStats={authUser.monthlyStats} />
+              </div>
+              <div>
+                <BreakdownChart breakdown={authUser.contributionBreakdown} />
+              </div>
+            </div>
+            <div style={{ marginBottom: 24 }}>
+              <MilestoneBadges earnedMilestones={authUser.milestones} stats={authUser.stats} />
+            </div>
+          </>
+        )}
         <ContributionGrid user={user} chronicles={CHRONICLES} />
       </div>
     </div>
