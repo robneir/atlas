@@ -49,7 +49,7 @@ export default function MilestoneBadges({
     <div
       style={{
         backgroundColor: "var(--atlas-white)",
-        borderRadius: 10,
+        borderRadius: 4,
         padding: 20,
         boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
       }}
@@ -141,7 +141,7 @@ export default function MilestoneBadges({
                     color: "#fff",
                     fontSize: 11,
                     padding: "6px 10px",
-                    borderRadius: 6,
+                    borderRadius: 4,
                     whiteSpace: "nowrap",
                     pointerEvents: "none",
                     zIndex: 20,

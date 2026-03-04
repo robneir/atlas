@@ -59,7 +59,7 @@ function TierBadge({ role }: { role: UserRole }) {
         color: "#fff",
         backgroundColor: tier.color,
         padding: "3px 10px",
-        borderRadius: 9999,
+        borderRadius: 4,
         marginLeft: 10,
         verticalAlign: "middle",
         lineHeight: 1.4,
@@ -78,8 +78,8 @@ function TierProgressionCard({ authUser }: { authUser: AuthUser }) {
     <div
       className="font-sans"
       style={{
-        backgroundColor: "#fff",
-        borderRadius: 10,
+        backgroundColor: "var(--atlas-white)",
+        borderRadius: 4,
         boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
         padding: 20,
         marginTop: 24,
@@ -149,7 +149,7 @@ function ExplorerProgression({ authUser }: { authUser: AuthUser }) {
       <div
         style={{
           height: 8,
-          borderRadius: 9999,
+          borderRadius: 4,
           backgroundColor: "var(--atlas-light-grey)",
           overflow: "hidden",
         }}
@@ -158,7 +158,7 @@ function ExplorerProgression({ authUser }: { authUser: AuthUser }) {
           style={{
             height: "100%",
             width: `${pct}%`,
-            borderRadius: 9999,
+            borderRadius: 4,
             backgroundColor: "#3b82f6",
             transition: "width 0.3s ease",
           }}
@@ -228,7 +228,7 @@ function ContributorProgression({ authUser }: { authUser: AuthUser }) {
           color: "#3b82f6",
           backgroundColor: "transparent",
           border: "1.5px solid #3b82f6",
-          borderRadius: 9999,
+          borderRadius: 4,
           padding: "6px 20px",
           cursor: "pointer",
         }}
@@ -290,24 +290,39 @@ export function ProfileHeader({ user, authUser }: ProfileHeaderProps) {
       className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-8"
     >
       {/* Avatar */}
-      <div
-        className="font-sans"
-        style={{
-          width: 80,
-          height: 80,
-          borderRadius: "50%",
-          backgroundColor: avatarColor,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: 28,
-          fontWeight: 700,
-          color: "#fff",
-          flexShrink: 0,
-        }}
-      >
-        {initials}
-      </div>
+      {user.avatarUrl ? (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src={user.avatarUrl}
+          alt={user.displayName}
+          style={{
+            width: 80,
+            height: 80,
+            borderRadius: "50%",
+            objectFit: "cover",
+            flexShrink: 0,
+          }}
+        />
+      ) : (
+        <div
+          className="font-sans"
+          style={{
+            width: 80,
+            height: 80,
+            borderRadius: "50%",
+            backgroundColor: avatarColor,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: 28,
+            fontWeight: 700,
+            color: "#fff",
+            flexShrink: 0,
+          }}
+        >
+          {initials}
+        </div>
+      )}
 
       {/* Info */}
       <div style={{ flex: 1, minWidth: 0 }}>

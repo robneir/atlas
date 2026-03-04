@@ -159,7 +159,7 @@ export default function VaultPage() {
             className="font-sans"
             style={{
               display: "flex",
-              borderRadius: 999,
+              borderRadius: 4,
               overflow: "hidden",
               border: "1px solid var(--atlas-light-grey)",
             }}

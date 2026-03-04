@@ -33,7 +33,7 @@ export function FigureCard({ figure }: FigureCardProps) {
     <div
       style={{
         background: "var(--atlas-white)",
-        borderRadius: 10,
+        borderRadius: 4,
         overflow: "hidden",
         boxShadow: "var(--atlas-shadow-sm)",
         transition: "all 0.2s ease",

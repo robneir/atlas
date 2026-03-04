@@ -156,7 +156,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
           maxWidth: 600,
           marginTop: "min(20vh, 160px)",
           background: "var(--atlas-white)",
-          borderRadius: 12,
+          borderRadius: 4,
           boxShadow: "var(--atlas-shadow-lg)",
           overflow: "hidden",
           animation: animating
@@ -193,7 +193,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             style={{
               padding: "16px 14px",
               fontSize: 17,
-              fontFamily: "var(--font-source-sans), sans-serif",
+              fontFamily: "var(--font-ui)",
               background: "transparent",
               border: "none",
               color: "var(--atlas-black)",
@@ -206,10 +206,10 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             className="flex items-center justify-center cursor-pointer"
             style={{
               padding: "3px 8px",
-              borderRadius: 5,
+              borderRadius: 4,
               fontSize: 11,
               fontWeight: 600,
-              fontFamily: "var(--font-source-sans), sans-serif",
+              fontFamily: "var(--font-ui)",
               color: "var(--atlas-mid-grey)",
               background: "var(--atlas-off-white)",
               border: "1px solid var(--atlas-light-grey)",
@@ -240,7 +240,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 padding: "40px 20px",
                 fontSize: 14,
                 color: "var(--atlas-mid-grey)",
-                fontFamily: "var(--font-source-sans), sans-serif",
+                fontFamily: "var(--font-ui)",
               }}
             >
               Start typing to search across all of Atlas
@@ -257,7 +257,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 padding: "40px 20px",
                 fontSize: 14,
                 color: "var(--atlas-mid-grey)",
-                fontFamily: "var(--font-source-sans), sans-serif",
+                fontFamily: "var(--font-ui)",
               }}
             >
               No results found
@@ -291,7 +291,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                       textTransform: "uppercase",
                       letterSpacing: "0.06em",
                       color: "var(--atlas-mid-grey)",
-                      fontFamily: "var(--font-source-sans), sans-serif",
+                      fontFamily: "var(--font-ui)",
                     }}
                   >
                     {label}
@@ -328,7 +328,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                           style={{
                             width: 32,
                             height: 32,
-                            borderRadius: 8,
+                            borderRadius: 4,
                             background: "var(--atlas-off-white)",
                           }}
                         >
@@ -346,8 +346,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                               fontSize: 15,
                               fontWeight: 600,
                               color: "var(--atlas-black)",
-                              fontFamily:
-                                "var(--font-source-sans), sans-serif",
+                              fontFamily: "var(--font-ui)",
                               lineHeight: 1.3,
                             }}
                           >
@@ -358,8 +357,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                             style={{
                               fontSize: 13,
                               color: "var(--atlas-mid-grey)",
-                              fontFamily:
-                                "var(--font-source-sans), sans-serif",
+                              fontFamily: "var(--font-ui)",
                               lineHeight: 1.4,
                             }}
                           >

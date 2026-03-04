@@ -5,7 +5,7 @@ import { EVENTS } from "@/data/events";
 interface ActivityItem {
   id: string;
   user: string;
-  initials: string;
+  avatarUrl: string;
   text: string;
   time: string;
 }
@@ -14,56 +14,56 @@ const ACTIVITY_ITEMS: ActivityItem[] = [
   {
     id: "act-1",
     user: USERS[0].displayName,
-    initials: "AO",
+    avatarUrl: USERS[0].avatarUrl,
     text: `published a new chronicle: "${CHRONICLES[0].title}"`,
     time: "2 hours ago",
   },
   {
     id: "act-2",
     user: USERS[1].displayName,
-    initials: "JW",
+    avatarUrl: USERS[1].avatarUrl,
     text: `starred "${CHRONICLES[2].title}"`,
     time: "3 hours ago",
   },
   {
     id: "act-3",
     user: USERS[2].displayName,
-    initials: "SP",
+    avatarUrl: USERS[2].avatarUrl,
     text: `added an event: "${EVENTS[4].title}"`,
     time: "5 hours ago",
   },
   {
     id: "act-4",
     user: USERS[3].displayName,
-    initials: "MB",
+    avatarUrl: USERS[3].avatarUrl,
     text: `earned the badge: Geology Enthusiast`,
     time: "8 hours ago",
   },
   {
     id: "act-5",
     user: USERS[4].displayName,
-    initials: "LW",
+    avatarUrl: USERS[4].avatarUrl,
     text: `published a new chronicle: "${CHRONICLES[4].title}"`,
     time: "yesterday",
   },
   {
     id: "act-6",
     user: USERS[5].displayName,
-    initials: "PS",
+    avatarUrl: USERS[5].avatarUrl,
     text: `starred "${CHRONICLES[7].title}"`,
     time: "yesterday",
   },
   {
     id: "act-7",
     user: USERS[7].displayName,
-    initials: "FD",
+    avatarUrl: USERS[7].avatarUrl,
     text: `added an event: "${EVENTS[7].title}"`,
     time: "2 days ago",
   },
   {
     id: "act-8",
     user: USERS[6].displayName,
-    initials: "HM",
+    avatarUrl: USERS[6].avatarUrl,
     text: `earned the badge: Book Lover`,
     time: "3 days ago",
   },
@@ -88,7 +88,7 @@ export function ActivityFeed() {
       <div
         style={{
           backgroundColor: "var(--atlas-white)",
-          borderRadius: 10,
+          borderRadius: 4,
           padding: "16px 20px",
           boxShadow: "var(--atlas-shadow-sm)",
         }}
@@ -108,24 +108,18 @@ export function ActivityFeed() {
             }}
           >
             {/* Small avatar */}
-            <div
-              className="font-sans"
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={item.avatarUrl}
+              alt={item.user}
               style={{
                 width: 28,
                 height: 28,
                 borderRadius: "50%",
-                backgroundColor: "var(--atlas-light-grey)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 10,
-                fontWeight: 700,
-                color: "var(--atlas-dark-grey)",
+                objectFit: "cover",
                 flexShrink: 0,
               }}
-            >
-              {item.initials}
-            </div>
+            />
 
             {/* Text */}
             <p

@@ -58,7 +58,7 @@ export function ChronicleCard({ chronicle }: ChronicleCardProps) {
       aria-label={chronicle.title}
       style={{
         background: "var(--atlas-white)",
-        borderRadius: 10,
+        borderRadius: 4,
         padding: "20px 24px",
         boxShadow: "var(--atlas-shadow-sm)",
         transition: "all 0.2s ease",
@@ -182,7 +182,7 @@ export function ChronicleCard({ chronicle }: ChronicleCardProps) {
                   color: "var(--atlas-mid-grey)",
                   border: "1px solid var(--atlas-light-grey)",
                   padding: "2px 8px",
-                  borderRadius: 999,
+                  borderRadius: 4,
                   letterSpacing: "0.03em",
                 }}
               >

@@ -121,7 +121,7 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
         <div style={{ marginTop: 24 }}>
           <p
             style={{
-              fontFamily: "var(--font-source-sans), sans-serif",
+              fontFamily: "var(--font-ui)",
               fontSize: 14,
               fontWeight: 600,
               color: "var(--atlas-charcoal)",
@@ -135,7 +135,7 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
           <div
             style={{
               height: 8,
-              borderRadius: 9999,
+              borderRadius: 4,
               background: "var(--atlas-light-grey)",
               overflow: "hidden",
             }}
@@ -144,7 +144,7 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
               style={{
                 height: "100%",
                 width: `${progress * 100}%`,
-                borderRadius: 9999,
+                borderRadius: 4,
                 background: "#3b82f6",
                 transition: "width 0.3s ease",
               }}
@@ -153,7 +153,7 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
 
           <p
             style={{
-              fontFamily: "var(--font-source-sans), sans-serif",
+              fontFamily: "var(--font-ui)",
               fontSize: 13,
               color: "var(--atlas-mid-grey)",
               margin: "10px 0 0 0",
@@ -171,7 +171,7 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
         <div style={{ marginTop: 24 }}>
           <p
             style={{
-              fontFamily: "var(--font-source-sans), sans-serif",
+              fontFamily: "var(--font-ui)",
               fontSize: 14,
               fontWeight: 600,
               color: "var(--atlas-charcoal)",
@@ -183,7 +183,7 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
 
           <ul
             style={{
-              fontFamily: "var(--font-source-sans), sans-serif",
+              fontFamily: "var(--font-ui)",
               fontSize: 13,
               color: "var(--atlas-mid-grey)",
               margin: "0 0 14px 0",
@@ -202,13 +202,13 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
             className="cursor-pointer"
             style={{
               padding: "8px 24px",
-              borderRadius: 9999,
+              borderRadius: 4,
               border: "2px solid #3b82f6",
               background: "transparent",
               color: "#3b82f6",
               fontSize: 14,
               fontWeight: 600,
-              fontFamily: "var(--font-source-sans), sans-serif",
+              fontFamily: "var(--font-ui)",
               transition: "background 0.15s, color 0.15s",
             }}
             onMouseEnter={(e) => {
@@ -234,7 +234,7 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
       <div style={{ marginTop: 24 }}>
         <p
           style={{
-            fontFamily: "var(--font-source-sans), sans-serif",
+            fontFamily: "var(--font-ui)",
             fontSize: 14,
             fontWeight: 600,
             color: "var(--atlas-charcoal)",
@@ -245,7 +245,7 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
         </p>
         <p
           style={{
-            fontFamily: "var(--font-source-sans), sans-serif",
+            fontFamily: "var(--font-ui)",
             fontSize: 13,
             color: "var(--atlas-mid-grey)",
             margin: "0 0 12px 0",
@@ -262,14 +262,14 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
             style={{
               flex: 1,
               background: "var(--atlas-off-white)",
-              borderRadius: 8,
+              borderRadius: 4,
               padding: "12px 16px",
               textAlign: "center",
             }}
           >
             <p
               style={{
-                fontFamily: "var(--font-source-sans), sans-serif",
+                fontFamily: "var(--font-ui)",
                 fontSize: 20,
                 fontWeight: 700,
                 color: "var(--atlas-charcoal)",
@@ -280,7 +280,7 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
             </p>
             <p
               style={{
-                fontFamily: "var(--font-source-sans), sans-serif",
+                fontFamily: "var(--font-ui)",
                 fontSize: 12,
                 color: "var(--atlas-mid-grey)",
                 margin: "2px 0 0 0",
@@ -293,14 +293,14 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
             style={{
               flex: 1,
               background: "var(--atlas-off-white)",
-              borderRadius: 8,
+              borderRadius: 4,
               padding: "12px 16px",
               textAlign: "center",
             }}
           >
             <p
               style={{
-                fontFamily: "var(--font-source-sans), sans-serif",
+                fontFamily: "var(--font-ui)",
                 fontSize: 20,
                 fontWeight: 700,
                 color: "var(--atlas-charcoal)",
@@ -311,7 +311,7 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
             </p>
             <p
               style={{
-                fontFamily: "var(--font-source-sans), sans-serif",
+                fontFamily: "var(--font-ui)",
                 fontSize: 12,
                 color: "var(--atlas-mid-grey)",
                 margin: "2px 0 0 0",
@@ -358,7 +358,7 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
           maxWidth: 480,
           marginTop: "min(15vh, 120px)",
           background: "var(--atlas-white)",
-          borderRadius: 12,
+          borderRadius: 4,
           boxShadow: "var(--atlas-shadow-lg)",
           overflow: "hidden",
           padding: 28,
@@ -376,7 +376,7 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
             right: 16,
             width: 32,
             height: 32,
-            borderRadius: 8,
+            borderRadius: 4,
             border: "none",
             background: "transparent",
             color: "var(--atlas-mid-grey)",
@@ -390,7 +390,7 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
         {!isSignedIn ? (
           <p
             style={{
-              fontFamily: "var(--font-source-sans), sans-serif",
+              fontFamily: "var(--font-ui)",
               fontSize: 15,
               color: "var(--atlas-mid-grey)",
               textAlign: "center",
@@ -408,7 +408,7 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
             >
               <h2
                 style={{
-                  fontFamily: "var(--font-playfair), serif",
+                  fontFamily: "var(--font-heading)",
                   fontSize: 24,
                   fontWeight: 700,
                   color: "var(--atlas-black)",
@@ -422,12 +422,12 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
                 style={{
                   display: "inline-block",
                   padding: "3px 12px",
-                  borderRadius: 9999,
+                  borderRadius: 4,
                   background: badge.bg,
                   color: "#ffffff",
                   fontSize: 12,
                   fontWeight: 600,
-                  fontFamily: "var(--font-source-sans), sans-serif",
+                  fontFamily: "var(--font-ui)",
                   lineHeight: 1.5,
                   whiteSpace: "nowrap",
                 }}
@@ -466,7 +466,7 @@ export function ContributeModal({ isOpen, onClose }: ContributeModalProps) {
                     <span
                       style={{
                         flex: 1,
-                        fontFamily: "var(--font-source-sans), sans-serif",
+                        fontFamily: "var(--font-ui)",
                         fontSize: 15,
                         color: unlocked
                           ? "var(--atlas-charcoal)"

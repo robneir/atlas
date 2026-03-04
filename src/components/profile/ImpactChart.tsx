@@ -44,15 +44,15 @@ function CustomTooltip({
   return (
     <div
       style={{
-        backgroundColor: "#ffffff",
+        backgroundColor: "var(--atlas-white)",
         border: "none",
-        borderRadius: 8,
+        borderRadius: 4,
         padding: "10px 14px",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
+        boxShadow: "var(--atlas-shadow-md)",
         fontSize: 13,
       }}
     >
-      <div style={{ fontWeight: 600, marginBottom: 4, color: "#1a1714" }}>
+      <div style={{ fontWeight: 600, marginBottom: 4, color: "var(--atlas-black)" }}>
         {label}
       </div>
       {payload.map((entry) => (
@@ -62,7 +62,7 @@ function CustomTooltip({
             display: "flex",
             alignItems: "center",
             gap: 6,
-            color: "#3a3530",
+            color: "var(--atlas-charcoal)",
           }}
         >
           <span
@@ -103,7 +103,7 @@ export default function ImpactChart({ monthlyStats }: ImpactChartProps) {
     <div
       style={{
         backgroundColor: "var(--atlas-white)",
-        borderRadius: 10,
+        borderRadius: 4,
         padding: 20,
         boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
       }}
@@ -136,16 +136,16 @@ export default function ImpactChart({ monthlyStats }: ImpactChartProps) {
             horizontal={true}
             vertical={false}
             strokeDasharray="4 4"
-            stroke="#e8e5e0"
+            stroke="var(--atlas-light-grey)"
           />
           <XAxis
             dataKey="name"
-            tick={{ fontSize: 12, fill: "#b5b0a8" }}
+            tick={{ fontSize: 12, fill: "var(--atlas-mid-grey)" }}
             axisLine={false}
             tickLine={false}
           />
           <YAxis
-            tick={{ fontSize: 12, fill: "#b5b0a8" }}
+            tick={{ fontSize: 12, fill: "var(--atlas-mid-grey)" }}
             axisLine={false}
             tickLine={false}
             width={40}

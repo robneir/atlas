@@ -562,12 +562,8 @@ export function FeedPostCard({ post }: FeedPostCardProps) {
   return (
     <article
       style={{
-        background: "var(--atlas-white)",
-        boxShadow: "var(--atlas-shadow-sm)",
-        borderRadius: 4,
-        padding: 20,
-        marginBottom: 12,
-        border: "1px solid var(--atlas-light-grey)",
+        padding: "20px 0",
+        borderBottom: "1px solid var(--atlas-light-grey)",
       }}
     >
       {/* ── Header ────────────────────────────────────── */}
@@ -586,6 +582,19 @@ export function FeedPostCard({ post }: FeedPostCardProps) {
           >
             <Globe size={20} style={{ color: "#fff" }} />
           </div>
+        ) : author?.avatarUrl ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={author.avatarUrl}
+            alt={displayName}
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: "50%",
+              objectFit: "cover",
+              flexShrink: 0,
+            }}
+          />
         ) : (
           <div
             className="flex items-center justify-center font-sans"
@@ -598,7 +607,6 @@ export function FeedPostCard({ post }: FeedPostCardProps) {
               fontSize: 16,
               fontWeight: 700,
               flexShrink: 0,
-              textTransform: "uppercase",
             }}
           >
             {displayName.charAt(0)}
@@ -688,7 +696,7 @@ export function FeedPostCard({ post }: FeedPostCardProps) {
       {/* ── Footer ────────────────────────────────────── */}
       <div
         className="flex items-center gap-4"
-        style={{ borderTop: "1px solid var(--atlas-light-grey)", paddingTop: 12 }}
+        style={{ paddingTop: 10 }}
       >
         <VoteButtons itemId={post.id} initialScore={post.score} />
 

@@ -132,7 +132,7 @@ export function ContributionGrid({ user, chronicles }: ContributionGridProps) {
         <div
           style={{
             backgroundColor: "var(--atlas-white)",
-            borderRadius: 10,
+            borderRadius: 4,
             padding: 20,
             boxShadow: "var(--atlas-shadow-sm)",
           }}
@@ -228,7 +228,7 @@ export function ContributionGrid({ user, chronicles }: ContributionGridProps) {
           <div
             style={{
               backgroundColor: "var(--atlas-white)",
-              borderRadius: 10,
+              borderRadius: 4,
               boxShadow: "var(--atlas-shadow-sm)",
               padding: "4px 20px",
             }}

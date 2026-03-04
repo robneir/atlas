@@ -60,7 +60,7 @@ export function WelcomeScene({ onComplete }: WelcomeSceneProps) {
         {/* ATLAS title */}
         <h1
           style={{
-            fontFamily: "var(--font-playfair), serif",
+            fontFamily: "var(--font-heading)",
             fontSize: 64,
             fontWeight: 700,
             color: "white",
@@ -76,7 +76,7 @@ export function WelcomeScene({ onComplete }: WelcomeSceneProps) {
         {/* Subtitle */}
         <p
           style={{
-            fontFamily: "var(--font-source-sans), sans-serif",
+            fontFamily: "var(--font-ui)",
             fontSize: 20,
             color: "rgba(255, 255, 255, 0.7)",
             margin: 0,
@@ -90,7 +90,7 @@ export function WelcomeScene({ onComplete }: WelcomeSceneProps) {
         {/* Description */}
         <p
           style={{
-            fontFamily: "var(--font-source-sans), sans-serif",
+            fontFamily: "var(--font-ui)",
             fontSize: 16,
             color: "rgba(255, 255, 255, 0.5)",
             margin: 0,
@@ -109,13 +109,13 @@ export function WelcomeScene({ onComplete }: WelcomeSceneProps) {
           className="onboarding-cta"
           onClick={() => setStep("interests")}
           style={{
-            fontFamily: "var(--font-source-sans), sans-serif",
+            fontFamily: "var(--font-ui)",
             fontSize: 15,
             fontWeight: 600,
             color: "white",
             background: "var(--atlas-accent, #D1401F)",
             border: "none",
-            borderRadius: 999,
+            borderRadius: 4,
             padding: "15px 32px",
             cursor: "pointer",
             marginTop: 16,

@@ -7,38 +7,28 @@ export function FeedComposer() {
 
   if (!isSignedIn || !user) return null;
 
-  const initial = user.displayName.charAt(0).toUpperCase();
-
   return (
     <div
       style={{
-        backgroundColor: "var(--atlas-white)",
-        border: "1px solid var(--atlas-light-grey)",
-        borderRadius: 4,
-        padding: 16,
+        padding: "16px 0",
         marginBottom: 16,
+        borderBottom: "1px solid var(--atlas-light-grey)",
       }}
     >
       <div style={{ display: "flex", flexDirection: "row", gap: 12 }}>
         {/* Avatar */}
-        <div
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={user.avatarUrl}
+          alt={user.displayName}
           style={{
             width: 40,
             height: 40,
             borderRadius: "50%",
-            backgroundColor: "var(--atlas-accent)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#fff",
-            fontSize: 16,
-            fontWeight: 700,
-            fontFamily: "var(--font-ui)",
+            objectFit: "cover",
             flexShrink: 0,
           }}
-        >
-          {initial}
-        </div>
+        />
 
         {/* Input area */}
         <div style={{ flex: 1 }}>

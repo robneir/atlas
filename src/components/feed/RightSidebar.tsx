@@ -1,6 +1,5 @@
 "use client";
 
-import { Search } from "lucide-react";
 import { FEED_POSTS } from "@/data/feed-posts";
 import { USERS } from "@/data/users";
 
@@ -54,52 +53,10 @@ export function RightSidebar() {
         width: 300,
         height: "calc(100vh - 54px)",
         zIndex: 40,
-        backgroundColor: "var(--atlas-white)",
-        borderLeft: "1px solid var(--atlas-light-grey)",
-        padding: 16,
+        padding: "24px 16px",
         overflowY: "auto",
       }}
     >
-      {/* Search button */}
-      <button
-        type="button"
-        onClick={() => {
-          window.dispatchEvent(new CustomEvent("atlas:open-search"));
-        }}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          width: "100%",
-          padding: "10px 14px",
-          borderRadius: 4,
-          border: "1px solid var(--atlas-light-grey)",
-          backgroundColor: "transparent",
-          cursor: "pointer",
-          textAlign: "left",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = "var(--atlas-mid-grey)";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = "var(--atlas-light-grey)";
-        }}
-      >
-        <Search
-          size={16}
-          style={{ color: "var(--atlas-mid-grey)", flexShrink: 0 }}
-        />
-        <span
-          style={{
-            fontFamily: "var(--font-ui)",
-            fontSize: 14,
-            color: "var(--atlas-mid-grey)",
-          }}
-        >
-          Search Atlas...
-        </span>
-      </button>
-
       {/* Trending This Week */}
       <h3
         style={{
@@ -107,7 +64,7 @@ export function RightSidebar() {
           fontSize: 14,
           fontWeight: 700,
           color: "var(--atlas-black)",
-          marginTop: 20,
+          marginTop: 0,
           marginBottom: 12,
         }}
       >
@@ -195,25 +152,18 @@ export function RightSidebar() {
               padding: "8px 0",
             }}
           >
-            {/* Avatar initial circle */}
-            <div
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={user.avatarUrl}
+              alt={user.displayName}
               style={{
                 width: 28,
                 height: 28,
                 borderRadius: "50%",
-                backgroundColor: "var(--atlas-accent)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#fff",
-                fontSize: 12,
-                fontWeight: 700,
-                fontFamily: "var(--font-ui)",
+                objectFit: "cover",
                 flexShrink: 0,
               }}
-            >
-              {user.displayName.charAt(0).toUpperCase()}
-            </div>
+            />
             <div
               style={{
                 display: "flex",

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Globe, BookOpen, MessageCircle, Compass, Search, X, Users, LogOut } from "lucide-react";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { CreateMenu } from "@/components/feed/CreateMenu";
 import { useAuth } from "@/hooks/useAuth";
 
 const navItems = [
@@ -37,9 +38,11 @@ const TIER_COLORS: Record<string, string> = {
 
 export function TopBar() {
   const pathname = usePathname();
+  const hideNav = pathname === "/";
   const { user, isSignedIn, signOut, openAuthModal } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
+  const [createMenuOpen, setCreateMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const avatarMenuRef = useRef<HTMLDivElement>(null);
 
@@ -47,6 +50,7 @@ export function TopBar() {
   useEffect(() => {
     setMobileMenuOpen(false);
     setAvatarMenuOpen(false);
+    setCreateMenuOpen(false);
   }, [pathname]);
 
   // Close mobile menu on outside click
@@ -79,27 +83,30 @@ export function TopBar() {
 
   // Close on Escape key
   useEffect(() => {
-    if (!mobileMenuOpen && !avatarMenuOpen) return;
+    if (!mobileMenuOpen && !avatarMenuOpen && !createMenuOpen) return;
 
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") {
         setMobileMenuOpen(false);
         setAvatarMenuOpen(false);
+        setCreateMenuOpen(false);
       }
     }
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [mobileMenuOpen, avatarMenuOpen]);
+  }, [mobileMenuOpen, avatarMenuOpen, createMenuOpen]);
 
   // Mutual exclusion: close avatar when hamburger opens and vice versa
   function openMobileMenu() {
     setAvatarMenuOpen(false);
+    setCreateMenuOpen(false);
     setMobileMenuOpen((v) => !v);
   }
 
   function toggleAvatarMenu() {
     setMobileMenuOpen(false);
+    setCreateMenuOpen(false);
     setAvatarMenuOpen((v) => !v);
   }
 
@@ -107,7 +114,9 @@ export function TopBar() {
     if (!isSignedIn) {
       openAuthModal();
     } else {
-      window.dispatchEvent(new CustomEvent("atlas:open-contribute"));
+      setCreateMenuOpen((v) => !v);
+      setAvatarMenuOpen(false);
+      setMobileMenuOpen(false);
     }
   }
 
@@ -134,6 +143,23 @@ export function TopBar() {
   /* ── Avatar component ─────────────────────────────────── */
   const Avatar = ({ size = 36 }: { size?: number }) => {
     if (!user) return null;
+    if (user.avatarUrl) {
+      return (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src={user.avatarUrl}
+          alt={user.displayName}
+          style={{
+            width: size,
+            height: size,
+            borderRadius: "50%",
+            objectFit: "cover",
+            flexShrink: 0,
+            cursor: "pointer",
+          }}
+        />
+      );
+    }
     return (
       <div
         style={{
@@ -182,8 +208,8 @@ export function TopBar() {
         </Link>
       </div>
 
-      {/* Nav Items - hidden on mobile */}
-      <nav aria-label="Main navigation" className="hidden md:flex items-center gap-2 mr-auto">
+      {/* Nav Items - hidden on mobile, hidden when hideNav is true (feed page uses left sidebar) */}
+      <nav aria-label="Main navigation" className={`hidden ${hideNav ? "" : "md:flex"} items-center gap-2 mr-auto`}>
         {navItems.map(({ label, href, icon: Icon, ...rest }) => {
           const isExternal = "external" in rest && rest.external;
           const isActive =
@@ -240,8 +266,8 @@ export function TopBar() {
         })}
       </nav>
 
-      {/* Spacer on mobile to push right items */}
-      <div className="flex-1 md:hidden" />
+      {/* Spacer to push right items — always on mobile, on desktop when nav is hidden */}
+      <div className={`flex-1 ${hideNav ? "" : "md:hidden"}`} />
 
       {/* Right Side — Order: Search | Contribute | Theme | Sign In/Avatar | Hamburger (mobile only) */}
       <div className="flex items-center gap-2 md:gap-[14px]">
@@ -305,27 +331,34 @@ export function TopBar() {
           <Search className="w-[16px] h-[16px]" />
         </button>
 
-        {/* Contribute — primary CTA */}
-        <button
-          type="button"
-          className="hidden lg:block rounded text-[14px] font-semibold text-white cursor-pointer transition-colors duration-150"
-          style={{
-            padding: "8px 22px",
-            background: "var(--atlas-accent)",
-            border: "none",
-            fontFamily: "var(--font-ui)",
-            whiteSpace: "nowrap",
-          }}
-          onClick={handleContributeClick}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "var(--atlas-accent-hover)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "var(--atlas-accent)";
-          }}
-        >
-          Contribute
-        </button>
+        {/* Contribute — primary CTA with CreateMenu dropdown */}
+        <div className="relative hidden lg:block">
+          <button
+            type="button"
+            className="rounded text-[14px] font-semibold text-white cursor-pointer transition-colors duration-150"
+            style={{
+              padding: "8px 22px",
+              background: "var(--atlas-accent)",
+              border: "none",
+              fontFamily: "var(--font-ui)",
+              whiteSpace: "nowrap",
+            }}
+            onClick={handleContributeClick}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "var(--atlas-accent-hover)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "var(--atlas-accent)";
+            }}
+          >
+            Contribute
+          </button>
+          <CreateMenu
+            open={createMenuOpen}
+            onClose={() => setCreateMenuOpen(false)}
+            dropDown
+          />
+        </div>
 
         {/* Theme Toggle (desktop only — in mobile dropdown) */}
         <div className="hidden md:block">

@@ -58,7 +58,7 @@ export function DailyBanner() {
       className="fixed top-[68px] left-3 right-3 md:left-1/2 md:right-auto md:-translate-x-1/2 z-[60]"
       style={{
         background: "var(--atlas-white)",
-        borderRadius: 999,
+        borderRadius: 4,
         boxShadow: "var(--atlas-shadow-md)",
         padding: "8px 16px",
         display: "flex",
@@ -81,7 +81,7 @@ export function DailyBanner() {
           textTransform: "uppercase",
           letterSpacing: "0.1em",
           padding: "2px 8px",
-          borderRadius: 999,
+          borderRadius: 4,
           flexShrink: 0,
         }}
       >

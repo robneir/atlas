@@ -60,8 +60,8 @@ export function ChatPanel({ figure }: ChatPanelProps) {
                 lineHeight: 1.5,
                 borderRadius:
                   message.role === "user"
-                    ? "16px 16px 4px 16px"
-                    : "16px 16px 16px 4px",
+                    ? "4px 4px 2px 4px"
+                    : "4px 4px 4px 2px",
                 backgroundColor:
                   message.role === "user"
                     ? "color-mix(in srgb, var(--atlas-accent) 10%, transparent)"
@@ -91,7 +91,7 @@ export function ChatPanel({ figure }: ChatPanelProps) {
           style={{
             width: "100%",
             padding: "12px 16px",
-            borderRadius: 999,
+            borderRadius: 4,
             border: "1px solid var(--atlas-light-grey)",
             backgroundColor: "var(--atlas-off-white)",
             opacity: 0.6,

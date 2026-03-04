@@ -37,8 +37,6 @@ export function LeftSidebar() {
         width: 220,
         height: "calc(100vh - 54px)",
         zIndex: 40,
-        backgroundColor: "var(--atlas-white)",
-        borderRight: "1px solid var(--atlas-light-grey)",
         padding: "16px 12px",
       }}
     >

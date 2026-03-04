@@ -10,11 +10,9 @@ export function FeedBanner() {
   return (
     <div
       style={{
-        backgroundColor: "var(--atlas-cream)",
-        border: "1px solid var(--atlas-light-grey)",
-        borderRadius: 4,
-        padding: 24,
+        padding: "24px 0",
         marginBottom: 16,
+        borderBottom: "1px solid var(--atlas-light-grey)",
       }}
     >
       <h2

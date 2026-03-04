@@ -27,7 +27,7 @@ export function MapLensesCard() {
       className="fixed top-[68px] right-3 md:right-[20px] z-50"
       style={{
         width: 200,
-        borderRadius: 10,
+        borderRadius: 4,
         boxShadow: "var(--atlas-shadow-md)",
         backgroundColor: isDark ? "#151518" : "var(--atlas-white)",
         border: isDark ? "1px solid rgba(255,255,255,0.08)" : "none",
@@ -78,7 +78,7 @@ export function MapLensesCard() {
                 style={{
                   width: 40,
                   height: 24,
-                  borderRadius: 12,
+                  borderRadius: 4,
                   backgroundColor: toggles[label]
                     ? "var(--atlas-accent)"
                     : "var(--atlas-light-grey)",

@@ -41,11 +41,11 @@ function CustomTooltip({
   return (
     <div
       style={{
-        backgroundColor: "#ffffff",
+        backgroundColor: "var(--atlas-white)",
         border: "none",
-        borderRadius: 8,
+        borderRadius: 4,
         padding: "10px 14px",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
+        boxShadow: "var(--atlas-shadow-md)",
         fontSize: 13,
       }}
     >
@@ -54,7 +54,7 @@ function CustomTooltip({
           display: "flex",
           alignItems: "center",
           gap: 6,
-          color: "#1a1714",
+          color: "var(--atlas-black)",
           fontWeight: 600,
         }}
       >
@@ -90,7 +90,7 @@ export default function BreakdownChart({ breakdown }: BreakdownChartProps) {
     <div
       style={{
         backgroundColor: "var(--atlas-white)",
-        borderRadius: 10,
+        borderRadius: 4,
         padding: 20,
         boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
       }}

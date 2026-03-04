@@ -9,10 +9,10 @@ interface ContributionHeatmapProps {
 }
 
 const INTENSITY_COLORS = [
-  "var(--atlas-cream)",
-  "#f0c8b8",
-  "#e8936e",
+  "var(--atlas-light-grey)",
+  "#c4856e",
   "#d96038",
+  "#D1401F",
   "var(--atlas-accent)",
 ];
 
@@ -116,7 +116,7 @@ export default function ContributionHeatmap({
     <div
       style={{
         backgroundColor: "var(--atlas-white)",
-        borderRadius: 10,
+        borderRadius: 4,
         padding: 20,
         boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
       }}

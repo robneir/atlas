@@ -50,7 +50,7 @@ export function FeaturedCollections() {
             style={{
               animationDelay: `${index * 80}ms`,
               backgroundColor: "var(--atlas-white)",
-              borderRadius: 10,
+              borderRadius: 4,
               boxShadow: "var(--atlas-shadow-sm)",
               padding: 20,
               cursor: "pointer",

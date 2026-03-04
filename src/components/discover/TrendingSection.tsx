@@ -63,7 +63,7 @@ export function TrendingSection() {
                 minWidth: 300,
                 maxWidth: 300,
                 backgroundColor: "var(--atlas-white)",
-                borderRadius: 10,
+                borderRadius: 4,
                 boxShadow: "var(--atlas-shadow-sm)",
                 overflow: "hidden",
                 display: "flex",

@@ -31,7 +31,7 @@ export default function Home() {
 
         {/* Main feed column */}
         <main
-          className="flex-1 relative z-10 mx-auto w-full lg:ml-[220px] xl:mr-[300px]"
+          className="flex-1 relative z-10 mx-auto w-full lg:ml-[220px]"
           style={{
             maxWidth: 640,
             padding: "24px 16px 100px",

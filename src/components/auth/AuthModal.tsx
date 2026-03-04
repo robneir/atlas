@@ -34,8 +34,8 @@ export function AuthModal() {
       setAnimating(true);
       setError("");
       setDisplayName("");
-      setEmail("");
-      setPassword("");
+      setEmail("elena@example.com");
+      setPassword("password123");
       setConfirmPassword("");
       setTab("signin");
       requestAnimationFrame(() => {
@@ -72,9 +72,14 @@ export function AuthModal() {
     setTab(newTab);
     setError("");
     setDisplayName("");
-    setEmail("");
-    setPassword("");
     setConfirmPassword("");
+    if (newTab === "signin") {
+      setEmail("elena@example.com");
+      setPassword("password123");
+    } else {
+      setEmail("");
+      setPassword("");
+    }
   }, []);
 
   /* ── Validation ──────────────────────────────────────── */
@@ -164,7 +169,7 @@ export function AuthModal() {
           maxWidth: 420,
           marginTop: "min(15vh, 120px)",
           background: "var(--atlas-white)",
-          borderRadius: 12,
+          borderRadius: 4,
           boxShadow: "var(--atlas-shadow-lg)",
           overflow: "hidden",
           animation: animating ? "searchScaleIn 0.15s ease-out" : undefined,
@@ -181,7 +186,7 @@ export function AuthModal() {
             right: 16,
             width: 32,
             height: 32,
-            borderRadius: 8,
+            borderRadius: 4,
             border: "none",
             background: "transparent",
             color: "var(--atlas-mid-grey)",
@@ -200,7 +205,7 @@ export function AuthModal() {
         >
           <h2
             style={{
-              fontFamily: "var(--font-playfair), serif",
+              fontFamily: "var(--font-heading)",
               fontSize: 24,
               fontWeight: 700,
               color: "var(--atlas-black)",
@@ -212,7 +217,7 @@ export function AuthModal() {
           </h2>
           <p
             style={{
-              fontFamily: "var(--font-source-sans), sans-serif",
+              fontFamily: "var(--font-ui)",
               fontSize: 14,
               color: "var(--atlas-mid-grey)",
               margin: "8px 0 0 0",
@@ -231,7 +236,7 @@ export function AuthModal() {
           style={{
             margin: "24px 32px 0 32px",
             background: "var(--atlas-off-white)",
-            borderRadius: 9999,
+            borderRadius: 4,
             padding: 4,
           }}
         >
@@ -241,11 +246,11 @@ export function AuthModal() {
             className="flex-1 cursor-pointer"
             style={{
               padding: "8px 0",
-              borderRadius: 9999,
+              borderRadius: 4,
               border: "none",
               fontSize: 14,
               fontWeight: 600,
-              fontFamily: "var(--font-source-sans), sans-serif",
+              fontFamily: "var(--font-ui)",
               background:
                 tab === "signin" ? "var(--atlas-accent)" : "transparent",
               color:
@@ -263,11 +268,11 @@ export function AuthModal() {
             className="flex-1 cursor-pointer"
             style={{
               padding: "8px 0",
-              borderRadius: 9999,
+              borderRadius: 4,
               border: "none",
               fontSize: 14,
               fontWeight: 600,
-              fontFamily: "var(--font-source-sans), sans-serif",
+              fontFamily: "var(--font-ui)",
               background:
                 tab === "signup" ? "var(--atlas-accent)" : "transparent",
               color:
@@ -294,7 +299,7 @@ export function AuthModal() {
                 htmlFor="auth-displayname"
                 style={{
                   display: "block",
-                  fontFamily: "var(--font-source-sans), sans-serif",
+                  fontFamily: "var(--font-ui)",
                   fontSize: 14,
                   fontWeight: 500,
                   color: "var(--atlas-charcoal)",
@@ -314,10 +319,10 @@ export function AuthModal() {
                 style={{
                   width: "100%",
                   boxSizing: "border-box",
-                  fontFamily: "var(--font-source-sans), sans-serif",
+                  fontFamily: "var(--font-ui)",
                   fontSize: 15,
                   border: "1.5px solid var(--atlas-light-grey)",
-                  borderRadius: 8,
+                  borderRadius: 4,
                   padding: "12px 16px",
                   color: "var(--atlas-black)",
                   background: "var(--atlas-white)",
@@ -341,7 +346,7 @@ export function AuthModal() {
               htmlFor="auth-email"
               style={{
                 display: "block",
-                fontFamily: "var(--font-source-sans), sans-serif",
+                fontFamily: "var(--font-ui)",
                 fontSize: 14,
                 fontWeight: 500,
                 color: "var(--atlas-charcoal)",
@@ -361,10 +366,10 @@ export function AuthModal() {
               style={{
                 width: "100%",
                 boxSizing: "border-box",
-                fontFamily: "var(--font-source-sans), sans-serif",
+                fontFamily: "var(--font-ui)",
                 fontSize: 15,
                 border: "1.5px solid var(--atlas-light-grey)",
-                borderRadius: 8,
+                borderRadius: 4,
                 padding: "12px 16px",
                 color: "var(--atlas-black)",
                 background: "var(--atlas-white)",
@@ -387,7 +392,7 @@ export function AuthModal() {
               htmlFor="auth-password"
               style={{
                 display: "block",
-                fontFamily: "var(--font-source-sans), sans-serif",
+                fontFamily: "var(--font-ui)",
                 fontSize: 14,
                 fontWeight: 500,
                 color: "var(--atlas-charcoal)",
@@ -406,10 +411,10 @@ export function AuthModal() {
               style={{
                 width: "100%",
                 boxSizing: "border-box",
-                fontFamily: "var(--font-source-sans), sans-serif",
+                fontFamily: "var(--font-ui)",
                 fontSize: 15,
                 border: "1.5px solid var(--atlas-light-grey)",
-                borderRadius: 8,
+                borderRadius: 4,
                 padding: "12px 16px",
                 color: "var(--atlas-black)",
                 background: "var(--atlas-white)",
@@ -433,7 +438,7 @@ export function AuthModal() {
                 htmlFor="auth-confirm-password"
                 style={{
                   display: "block",
-                  fontFamily: "var(--font-source-sans), sans-serif",
+                  fontFamily: "var(--font-ui)",
                   fontSize: 14,
                   fontWeight: 500,
                   color: "var(--atlas-charcoal)",
@@ -452,10 +457,10 @@ export function AuthModal() {
                 style={{
                   width: "100%",
                   boxSizing: "border-box",
-                  fontFamily: "var(--font-source-sans), sans-serif",
+                  fontFamily: "var(--font-ui)",
                   fontSize: 15,
                   border: "1.5px solid var(--atlas-light-grey)",
-                  borderRadius: 8,
+                  borderRadius: 4,
                   padding: "12px 16px",
                   color: "var(--atlas-black)",
                   background: "var(--atlas-white)",
@@ -478,7 +483,7 @@ export function AuthModal() {
             <p
               role="alert"
               style={{
-                fontFamily: "var(--font-source-sans), sans-serif",
+                fontFamily: "var(--font-ui)",
                 fontSize: 13,
                 color: "#dc2626",
                 margin: "16px 0 0 0",
@@ -497,13 +502,13 @@ export function AuthModal() {
               width: "100%",
               marginTop: 24,
               padding: "12px 0",
-              borderRadius: 9999,
+              borderRadius: 4,
               border: "none",
               background: "var(--atlas-accent)",
               color: "#ffffff",
               fontSize: 14,
               fontWeight: 600,
-              fontFamily: "var(--font-source-sans), sans-serif",
+              fontFamily: "var(--font-ui)",
               transition: "background 0.15s",
             }}
             onMouseEnter={(e) => {
@@ -520,7 +525,7 @@ export function AuthModal() {
           <p
             style={{
               textAlign: "center",
-              fontFamily: "var(--font-source-sans), sans-serif",
+              fontFamily: "var(--font-ui)",
               fontSize: 13,
               color: "var(--atlas-mid-grey)",
               margin: "20px 0 0 0",

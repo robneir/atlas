@@ -89,7 +89,7 @@ export default function EchoesPage() {
               onChange={(e) => setEraFilter(e.target.value as Era | "all")}
               style={{
                 padding: "8px 12px",
-                borderRadius: 8,
+                borderRadius: 4,
                 border: "1px solid var(--atlas-light-grey)",
                 backgroundColor: "var(--atlas-white)",
                 color: "var(--atlas-charcoal)",

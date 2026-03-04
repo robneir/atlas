@@ -15,6 +15,7 @@ import { useAuth } from "@/hooks/useAuth";
 interface CreateMenuProps {
   open: boolean;
   onClose: () => void;
+  dropDown?: boolean;
 }
 
 const menuItems = [
@@ -27,7 +28,7 @@ const menuItems = [
   { label: "Submit a Correction", icon: Pencil },
 ] as const;
 
-export function CreateMenu({ open, onClose }: CreateMenuProps) {
+export function CreateMenu({ open, onClose, dropDown }: CreateMenuProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { isSignedIn, openAuthModal } = useAuth();
 
@@ -64,10 +65,9 @@ export function CreateMenu({ open, onClose }: CreateMenuProps) {
       ref={containerRef}
       style={{
         position: "absolute",
-        bottom: "100%",
-        left: 0,
-        right: 0,
-        marginBottom: 8,
+        ...(dropDown
+          ? { top: "100%", right: 0, marginTop: 8, minWidth: 220 }
+          : { bottom: "100%", left: 0, right: 0, marginBottom: 8 }),
         backgroundColor: "var(--atlas-white)",
         border: "1px solid var(--atlas-light-grey)",
         borderRadius: 4,

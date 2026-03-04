@@ -32,15 +32,14 @@ export function useMapInteraction() {
 
     // Click on empty space → deselect
     map.on("click", (e) => {
-      try {
-        const features = map.queryRenderedFeatures(e.point, {
-          layers: [EVENTS_LAYER_ID],
-        });
-        if (!features.length) {
-          setSelectedEventId(null);
-        }
-      } catch {
-        // Layer may not exist during style transitions
+      if (!map.isStyleLoaded() || !map.getLayer(EVENTS_LAYER_ID)) {
+        return;
+      }
+      const features = map.queryRenderedFeatures(e.point, {
+        layers: [EVENTS_LAYER_ID],
+      });
+      if (!features.length) {
+        setSelectedEventId(null);
       }
     });
 
