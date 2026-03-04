@@ -3,12 +3,13 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Globe, BookOpen, MessageCircle, Compass, Search, X, Users, LogOut } from "lucide-react";
+import { Home, Globe, BookOpen, MessageCircle, Compass, Search, X, Users, LogOut } from "lucide-react";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { useAuth } from "@/hooks/useAuth";
 
 const navItems = [
-  { label: "Atlas", href: "/", icon: Globe },
+  { label: "Home", href: "/", icon: Home },
+  { label: "Map", href: "/map", icon: Globe },
   { label: "Chronicles", href: "/chronicles", icon: BookOpen },
   { label: "Echoes", href: "/echoes", icon: MessageCircle },
   { label: "Discover", href: "/discover", icon: Compass },
@@ -116,10 +117,10 @@ export function TopBar() {
       style={{
         display: "inline-block",
         padding: "2px 8px",
-        borderRadius: 9999,
+        borderRadius: 4,
         fontSize: 11,
         fontWeight: 600,
-        fontFamily: "var(--font-source-sans), sans-serif",
+        fontFamily: "var(--font-ui)",
         color: "#fff",
         backgroundColor: TIER_COLORS[role] || "var(--atlas-mid-grey)",
         lineHeight: "16px",
@@ -146,7 +147,7 @@ export function TopBar() {
           color: "#fff",
           fontSize: size * 0.38,
           fontWeight: 700,
-          fontFamily: "var(--font-source-sans), sans-serif",
+          fontFamily: "var(--font-ui)",
           letterSpacing: "0.02em",
           flexShrink: 0,
           cursor: "pointer",
@@ -169,25 +170,6 @@ export function TopBar() {
     >
       {/* Official site badge + Logo */}
       <div className="flex items-center gap-3 md:gap-4 mr-4 md:mr-12">
-        <span
-          className="hidden md:flex items-center gap-[5px] text-[11px] font-medium shrink-0"
-          style={{
-            color: "var(--atlas-dark-grey)",
-            fontFamily: "var(--font-source-sans), sans-serif",
-            letterSpacing: "0.01em",
-          }}
-        >
-          <span className="text-[13px] leading-none" aria-label="US flag">🇺🇸</span>
-          An official website of Atlas
-        </span>
-        <span
-          className="hidden md:block shrink-0"
-          style={{
-            width: 1,
-            height: 20,
-            background: "var(--atlas-light-grey)",
-          }}
-        />
         <Link
           href="/"
           className="font-serif text-[22px] md:text-[26px] font-black cursor-pointer"
@@ -209,7 +191,7 @@ export function TopBar() {
 
           const className = "flex items-center gap-[7px] px-4 py-2 text-[15px] cursor-pointer transition-colors duration-150";
           const style = {
-            fontFamily: "var(--font-source-sans), sans-serif",
+            fontFamily: "var(--font-ui)",
             fontWeight: isActive ? 700 : 500,
             color: isActive
               ? "var(--atlas-black)"
@@ -261,19 +243,19 @@ export function TopBar() {
       {/* Spacer on mobile to push right items */}
       <div className="flex-1 md:hidden" />
 
-      {/* Right Side */}
+      {/* Right Side — Order: Search | Contribute | Theme | Sign In/Avatar | Hamburger (mobile only) */}
       <div className="flex items-center gap-2 md:gap-[14px]">
-        {/* Search Button - simplified on mobile */}
+        {/* Search Button (desktop) */}
         <button
           type="button"
           aria-label="Search (Cmd+K)"
-          className="hidden md:flex items-center gap-[6px] rounded-full cursor-pointer transition-all duration-150"
+          className="hidden md:flex items-center gap-[6px] rounded cursor-pointer transition-all duration-150"
           style={{
             padding: "8px 14px",
             border: "1.5px solid var(--atlas-light-grey)",
             background: "transparent",
             color: "var(--atlas-dark-grey)",
-            fontFamily: "var(--font-source-sans), sans-serif",
+            fontFamily: "var(--font-ui)",
             fontSize: 14,
             fontWeight: 500,
             whiteSpace: "nowrap",
@@ -304,11 +286,11 @@ export function TopBar() {
           </kbd>
         </button>
 
-        {/* Mobile search icon button */}
+        {/* Search icon (mobile) */}
         <button
           type="button"
           aria-label="Search"
-          className="flex md:hidden items-center justify-center rounded-full cursor-pointer"
+          className="flex md:hidden items-center justify-center rounded cursor-pointer"
           style={{
             width: 40,
             height: 40,
@@ -323,17 +305,44 @@ export function TopBar() {
           <Search className="w-[16px] h-[16px]" />
         </button>
 
-        {/* Sign In Button (desktop, signed out) */}
+        {/* Contribute — primary CTA */}
+        <button
+          type="button"
+          className="hidden lg:block rounded text-[14px] font-semibold text-white cursor-pointer transition-colors duration-150"
+          style={{
+            padding: "8px 22px",
+            background: "var(--atlas-accent)",
+            border: "none",
+            fontFamily: "var(--font-ui)",
+            whiteSpace: "nowrap",
+          }}
+          onClick={handleContributeClick}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "var(--atlas-accent-hover)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "var(--atlas-accent)";
+          }}
+        >
+          Contribute
+        </button>
+
+        {/* Theme Toggle (desktop only — in mobile dropdown) */}
+        <div className="hidden md:block">
+          <ThemeToggle />
+        </div>
+
+        {/* Sign In (desktop, signed out) */}
         {!isSignedIn && (
           <button
             type="button"
-            className="hidden lg:flex items-center gap-[6px] rounded-full text-[14px] font-semibold cursor-pointer transition-all duration-150"
+            className="hidden lg:flex items-center gap-[6px] rounded text-[14px] font-semibold cursor-pointer transition-all duration-150"
             style={{
               padding: "8px 18px",
               border: "1.5px solid var(--atlas-light-grey)",
               background: "transparent",
               color: "var(--atlas-dark-grey)",
-              fontFamily: "var(--font-source-sans), sans-serif",
+              fontFamily: "var(--font-ui)",
               whiteSpace: "nowrap",
             }}
             onClick={openAuthModal}
@@ -370,7 +379,7 @@ export function TopBar() {
                 className="absolute right-0 top-[calc(100%+8px)]"
                 style={{
                   width: 240,
-                  borderRadius: 12,
+                  borderRadius: 4,
                   backgroundColor: "var(--atlas-white)",
                   boxShadow: "var(--atlas-shadow-lg)",
                   border: "1px solid var(--atlas-light-grey)",
@@ -435,7 +444,7 @@ export function TopBar() {
                     background: "none",
                     border: "none",
                     textAlign: "left",
-                    fontFamily: "var(--font-source-sans), sans-serif",
+                    fontFamily: "var(--font-ui)",
                   }}
                   onClick={() => {
                     setAvatarMenuOpen(false);
@@ -458,66 +467,15 @@ export function TopBar() {
           </div>
         )}
 
-        {/* Choose Era Button - hidden on mobile */}
-        <button
-          type="button"
-          className="hidden lg:flex items-center gap-[6px] rounded-full text-[14px] font-semibold cursor-pointer transition-all duration-150"
-          style={{
-            padding: "8px 18px",
-            border: "1.5px solid var(--atlas-light-grey)",
-            background: "transparent",
-            color: "var(--atlas-link)",
-            fontFamily: "var(--font-source-sans), sans-serif",
-            whiteSpace: "nowrap",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = "var(--atlas-link)";
-            e.currentTarget.style.background = "rgba(209,64,31,0.04)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = "var(--atlas-light-grey)";
-            e.currentTarget.style.background = "transparent";
-          }}
-        >
-          Choose Era
-        </button>
-
-        {/* Contribute Button - hidden on mobile/tablet */}
-        <button
-          type="button"
-          className="hidden lg:block rounded-full text-[14px] font-semibold text-white cursor-pointer transition-colors duration-150"
-          style={{
-            padding: "8px 22px",
-            background: "var(--atlas-accent)",
-            border: "none",
-            fontFamily: "var(--font-source-sans), sans-serif",
-            whiteSpace: "nowrap",
-          }}
-          onClick={handleContributeClick}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "var(--atlas-accent-hover)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "var(--atlas-accent)";
-          }}
-        >
-          Contribute
-        </button>
-
-        {/* Theme Toggle - hidden on mobile, shown in dropdown */}
-        <div className="hidden md:block">
-          <ThemeToggle />
-        </div>
-
-        {/* Hamburger / Close Menu Button */}
-        <div ref={menuRef} className="relative">
+        {/* Hamburger — mobile only */}
+        <div ref={menuRef} className="relative md:hidden">
           <button
             type="button"
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
             aria-haspopup="true"
             onClick={openMobileMenu}
-            className="flex flex-col items-center justify-center w-10 h-10 md:w-9 md:h-9 cursor-pointer rounded-full"
+            className="flex flex-col items-center justify-center w-10 h-10 md:w-9 md:h-9 cursor-pointer rounded"
             style={{
               border: "1.5px solid var(--atlas-light-grey)",
               background: "transparent",
@@ -562,7 +520,7 @@ export function TopBar() {
               className="mobile-nav-menu absolute right-0 top-[calc(100%+8px)]"
               style={{
                 width: 260,
-                borderRadius: 12,
+                borderRadius: 4,
                 backgroundColor: "var(--atlas-white)",
                 boxShadow: "var(--atlas-shadow-lg)",
                 border: "1px solid var(--atlas-light-grey)",
@@ -672,13 +630,13 @@ export function TopBar() {
                 {!isSignedIn && (
                   <button
                     type="button"
-                    className="flex items-center justify-center gap-2 rounded-full text-[14px] font-semibold cursor-pointer transition-all duration-150 w-full"
+                    className="flex items-center justify-center gap-2 rounded text-[14px] font-semibold cursor-pointer transition-all duration-150 w-full"
                     style={{
                       padding: "10px 18px",
                       border: "1.5px solid var(--atlas-light-grey)",
                       background: "transparent",
                       color: "var(--atlas-dark-grey)",
-                      fontFamily: "var(--font-source-sans), sans-serif",
+                      fontFamily: "var(--font-ui)",
                     }}
                     onClick={() => {
                       setMobileMenuOpen(false);
@@ -691,26 +649,12 @@ export function TopBar() {
 
                 <button
                   type="button"
-                  className="flex items-center justify-center gap-2 rounded-full text-[14px] font-semibold cursor-pointer transition-all duration-150 w-full"
-                  style={{
-                    padding: "10px 18px",
-                    border: "1.5px solid var(--atlas-light-grey)",
-                    background: "transparent",
-                    color: "var(--atlas-link)",
-                    fontFamily: "var(--font-source-sans), sans-serif",
-                  }}
-                >
-                  Choose Era
-                </button>
-
-                <button
-                  type="button"
-                  className="flex items-center justify-center rounded-full text-[14px] font-semibold text-white cursor-pointer transition-colors duration-150 w-full"
+                  className="flex items-center justify-center rounded text-[14px] font-semibold text-white cursor-pointer transition-colors duration-150 w-full"
                   style={{
                     padding: "10px 22px",
                     background: "var(--atlas-accent)",
                     border: "none",
-                    fontFamily: "var(--font-source-sans), sans-serif",
+                    fontFamily: "var(--font-ui)",
                   }}
                   onClick={() => {
                     setMobileMenuOpen(false);
@@ -724,13 +668,13 @@ export function TopBar() {
                 {isSignedIn && (
                   <button
                     type="button"
-                    className="flex items-center justify-center gap-2 rounded-full text-[14px] font-semibold cursor-pointer transition-all duration-150 w-full"
+                    className="flex items-center justify-center gap-2 rounded text-[14px] font-semibold cursor-pointer transition-all duration-150 w-full"
                     style={{
                       padding: "10px 18px",
                       border: "1.5px solid var(--atlas-light-grey)",
                       background: "transparent",
                       color: "var(--atlas-dark-grey)",
-                      fontFamily: "var(--font-source-sans), sans-serif",
+                      fontFamily: "var(--font-ui)",
                     }}
                     onClick={() => {
                       setMobileMenuOpen(false);
