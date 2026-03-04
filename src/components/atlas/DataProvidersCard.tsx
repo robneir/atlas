@@ -11,7 +11,7 @@ export function DataProvidersCard() {
       className="fixed bottom-[120px] right-3 md:right-[20px] z-50 hidden md:block"
       style={{
         width: 300,
-        borderRadius: 10,
+        borderRadius: 4,
         boxShadow: "var(--atlas-shadow-md)",
         backgroundColor: "var(--atlas-white)",
         padding: "14px 16px",

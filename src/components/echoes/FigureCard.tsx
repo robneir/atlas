@@ -4,6 +4,8 @@ import Link from "next/link";
 import type { HistoricalFigure } from "@/data/types";
 import { ERA_CONFIG } from "@/lib/eras";
 import { EraTag } from "@/components/shared/EraTag";
+import { VoteButtons } from "@/components/shared/VoteButtons";
+import { StarButton } from "@/components/chronicles/StarButton";
 
 interface FigureCardProps {
   figure: HistoricalFigure;
@@ -28,18 +30,17 @@ export function FigureCard({ figure }: FigureCardProps) {
   const initials = getInitials(figure.name);
 
   return (
-    <Link href={`/echoes/${figure.id}`} aria-label={`Chat with ${figure.name} — ${figure.title}`} style={{ textDecoration: "none" }}>
-      <div
-        style={{
-          background: "var(--atlas-white)",
-          borderRadius: 10,
-          overflow: "hidden",
-          boxShadow: "var(--atlas-shadow-sm)",
-          transition: "all 0.2s ease",
-          cursor: "pointer",
-        }}
-        className="hover:shadow-[var(--atlas-shadow-md)] hover:-translate-y-[2px]"
-      >
+    <div
+      style={{
+        background: "var(--atlas-white)",
+        borderRadius: 4,
+        overflow: "hidden",
+        boxShadow: "var(--atlas-shadow-sm)",
+        transition: "all 0.2s ease",
+      }}
+      className="hover:shadow-[var(--atlas-shadow-md)] hover:-translate-y-[2px]"
+    >
+      <Link href={`/echoes/${figure.id}`} aria-label={`Chat with ${figure.name} — ${figure.title}`} style={{ textDecoration: "none", cursor: "pointer", display: "block" }}>
         {/* Portrait area */}
         <div
           style={{
@@ -142,7 +143,13 @@ export function FigureCard({ figure }: FigureCardProps) {
             {figure.bio}
           </p>
         </div>
+      </Link>
+
+      {/* Interactive buttons — outside Link to prevent navigation on click */}
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 0, padding: "0 20px 16px", borderTop: "1px solid var(--atlas-light-grey)" }}>
+        <VoteButtons itemId={figure.id} initialScore={figure.keyFacts.length * 12 + 15} />
+        <StarButton count={figure.keyFacts.length * 8} itemId={figure.id} />
       </div>
-    </Link>
+    </div>
   );
 }

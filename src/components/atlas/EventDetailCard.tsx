@@ -1,16 +1,28 @@
 "use client";
 
-import { X, MapPin } from "lucide-react";
+import { X, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 import type { HistoricalEvent } from "@/data/types";
 import { FIGURES } from "@/data/figures";
 import { EraTag } from "@/components/shared/EraTag";
+import { VoteButtons } from "@/components/shared/VoteButtons";
 
 interface EventDetailCardProps {
   event: HistoricalEvent;
   onClose: () => void;
+  onNext?: () => void;
+  onPrev?: () => void;
+  currentIndex?: number;
+  totalCount?: number;
 }
 
-export function EventDetailCard({ event, onClose }: EventDetailCardProps) {
+export function EventDetailCard({
+  event,
+  onClose,
+  onNext,
+  onPrev,
+  currentIndex,
+  totalCount,
+}: EventDetailCardProps) {
   // Find the first related figure for the "Chat with" button
   const relatedFigure = FIGURES.find((f) =>
     event.relatedFigureIds.includes(f.id)
@@ -24,7 +36,7 @@ export function EventDetailCard({ event, onClose }: EventDetailCardProps) {
       style={{
         bottom: 120,
         backgroundColor: "var(--atlas-white)",
-        borderRadius: 12,
+        borderRadius: 4,
         boxShadow: "var(--atlas-shadow-lg)",
         padding: "20px",
         animation: "eventCardSlideUp 0.3s ease-out both",
@@ -122,7 +134,7 @@ export function EventDetailCard({ event, onClose }: EventDetailCardProps) {
             padding: "12px 18px",
             fontSize: 13,
             fontWeight: 600,
-            borderRadius: 999,
+            borderRadius: 4,
             border: "1.5px solid var(--atlas-light-grey)",
             background: "transparent",
             color: "var(--atlas-dark-grey)",
@@ -137,7 +149,7 @@ export function EventDetailCard({ event, onClose }: EventDetailCardProps) {
             padding: "12px 18px",
             fontSize: 13,
             fontWeight: 600,
-            borderRadius: 999,
+            borderRadius: 4,
             border: "1.5px solid var(--atlas-light-grey)",
             background: "transparent",
             color: "var(--atlas-dark-grey)",
@@ -153,7 +165,7 @@ export function EventDetailCard({ event, onClose }: EventDetailCardProps) {
               padding: "12px 18px",
               fontSize: 13,
               fontWeight: 600,
-              borderRadius: 999,
+              borderRadius: 4,
               border: "1.5px solid transparent",
               backgroundColor: "var(--atlas-accent)",
               color: "#ffffff",
@@ -163,6 +175,78 @@ export function EventDetailCard({ event, onClose }: EventDetailCardProps) {
           </button>
         )}
       </div>
+
+      {/* Vote / interaction row */}
+      <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--atlas-light-grey)" }}>
+        <VoteButtons itemId={event.id} initialScore={Math.abs(event.year % 50) + 10} />
+      </div>
+
+      {/* Next / Prev navigation */}
+      {totalCount != null && totalCount > 1 && (
+        <div
+          className="font-sans"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginTop: 12,
+            paddingTop: 12,
+            borderTop: "1px solid var(--atlas-light-grey)",
+          }}
+        >
+          <button
+            type="button"
+            disabled={!onPrev}
+            onClick={onPrev}
+            className="cursor-pointer transition-colors"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 4,
+              padding: "6px 10px",
+              borderRadius: 4,
+              border: "1px solid var(--atlas-light-grey)",
+              background: "transparent",
+              color: onPrev ? "var(--atlas-charcoal)" : "var(--atlas-light-grey)",
+              fontSize: 13,
+              fontWeight: 500,
+            }}
+          >
+            <ChevronLeft size={14} />
+            Prev
+          </button>
+          <span
+            style={{
+              fontSize: 12,
+              color: "var(--atlas-mid-grey)",
+              fontWeight: 500,
+            }}
+          >
+            {(currentIndex ?? 0) + 1} of {totalCount}
+          </span>
+          <button
+            type="button"
+            disabled={!onNext}
+            onClick={onNext}
+            className="cursor-pointer transition-colors"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 4,
+              padding: "6px 10px",
+              borderRadius: 4,
+              border: "1px solid var(--atlas-light-grey)",
+              background: "transparent",
+              color: onNext ? "var(--atlas-charcoal)" : "var(--atlas-light-grey)",
+              fontSize: 13,
+              fontWeight: 500,
+            }}
+          >
+            Next
+            <ChevronRight size={14} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

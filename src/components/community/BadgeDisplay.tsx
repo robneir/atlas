@@ -17,7 +17,7 @@ export function BadgeDisplay({ badges }: BadgeDisplayProps) {
           marginBottom: 16,
         }}
       >
-        Badges
+        Acknowledgments
       </h2>
 
       <div
@@ -37,7 +37,7 @@ export function BadgeDisplay({ badges }: BadgeDisplayProps) {
               gap: 6,
               padding: "6px 14px",
               backgroundColor: "var(--atlas-off-white)",
-              borderRadius: 999,
+              borderRadius: 4,
               fontSize: 13,
               fontWeight: 600,
               color: "var(--atlas-charcoal)",

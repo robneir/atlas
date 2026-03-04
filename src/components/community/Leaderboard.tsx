@@ -15,15 +15,6 @@ export function Leaderboard() {
       .slice(0, 5);
   }, []);
 
-  const getInitials = (name: string) => {
-    return name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 2);
-  };
-
   return (
     <section style={{ marginBottom: 48 }}>
       <h2
@@ -42,7 +33,7 @@ export function Leaderboard() {
       <div
         style={{
           backgroundColor: "var(--atlas-white)",
-          borderRadius: 10,
+          borderRadius: 4,
           boxShadow: "var(--atlas-shadow-sm)",
           padding: "4px 20px",
         }}
@@ -77,24 +68,18 @@ export function Leaderboard() {
             </span>
 
             {/* Avatar */}
-            <div
-              className="font-sans"
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={user.avatarUrl}
+              alt={user.displayName}
               style={{
                 width: 36,
                 height: 36,
                 borderRadius: "50%",
-                backgroundColor: "var(--atlas-light-grey)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 13,
-                fontWeight: 700,
-                color: "var(--atlas-dark-grey)",
+                objectFit: "cover",
                 flexShrink: 0,
               }}
-            >
-              {getInitials(user.displayName)}
-            </div>
+            />
 
             {/* Name + username */}
             <div style={{ flex: 1, minWidth: 0 }}>

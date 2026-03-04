@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { useTheme } from "@/hooks/useTheme";
 import { useMapInteraction } from "@/hooks/useMapInteraction";
 import { EVENTS } from "@/data/events";
 import { ERA_CONFIG } from "@/lib/eras";
 import { MapBackground } from "./MapBackground";
+import type { HistoricalEvent } from "@/data/types";
 
 // Mapbox GL must be imported client-side only
 import mapboxgl from "mapbox-gl";
@@ -87,21 +88,55 @@ function addEventsLayer(map: mapboxgl.Map) {
 }
 
 // ---------------------------------------------------------------------------
+// Props
+// ---------------------------------------------------------------------------
+
+interface MapViewProps {
+  onThisDayEvents?: HistoricalEvent[];
+  visitedIds?: Set<string>;
+  onSelectEvent?: (eventId: string | null) => void;
+  selectedEventId?: string | null;
+}
+
+// ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
-export function MapView() {
+export function MapView({
+  onThisDayEvents = [],
+  visitedIds = new Set(),
+  onSelectEvent,
+  selectedEventId,
+}: MapViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { mapRef, attachListeners } = useMapInteraction();
   const { theme } = useTheme();
   const [mapReady, setMapReady] = useState(false);
   const [tokenMissing, setTokenMissing] = useState(false);
+  const markersRef = useRef<mapboxgl.Marker[]>([]);
 
   // Track theme in a ref so the style.load callback always sees the latest.
   const themeRef = useRef(theme);
   useEffect(() => {
     themeRef.current = theme;
   }, [theme]);
+
+  // ------------------------------------------------------------------
+  // flyTo helper
+  // ------------------------------------------------------------------
+  const flyToEvent = useCallback(
+    (event: HistoricalEvent) => {
+      const map = mapRef.current;
+      if (!map) return;
+      map.flyTo({
+        center: event.coordinates as [number, number],
+        zoom: 6,
+        duration: 1500,
+        essential: true,
+      });
+    },
+    [mapRef]
+  );
 
   // ------------------------------------------------------------------
   // Initialize Mapbox map
@@ -117,12 +152,16 @@ export function MapView() {
 
     mapboxgl.accessToken = token;
 
+    // Read saved projection preference (default: globe)
+    const savedProjection = localStorage.getItem("atlas-projection") || "globe";
+
     const map = new mapboxgl.Map({
       container: containerRef.current,
       style: theme === "dark" ? DARK_STYLE : LIGHT_STYLE,
       center: INITIAL_CENTER,
       zoom: INITIAL_ZOOM,
-      scrollZoom: false, // disabled initially per spec
+      projection: savedProjection as "globe" | "mercator",
+      scrollZoom: true,
       attributionControl: false, // we'll add a compact one
     });
 
@@ -149,6 +188,23 @@ export function MapView() {
   }, []);
 
   // ------------------------------------------------------------------
+  // Projection switching — listen for 2D/3D toggle
+  // ------------------------------------------------------------------
+  useEffect(() => {
+    function handleProjection(e: Event) {
+      const map = mapRef.current;
+      if (!map) return;
+      const projection = (e as CustomEvent).detail?.projection;
+      if (projection === "globe" || projection === "mercator") {
+        map.setProjection(projection);
+      }
+    }
+
+    window.addEventListener("atlas:set-projection", handleProjection);
+    return () => window.removeEventListener("atlas:set-projection", handleProjection);
+  }, [mapRef]);
+
+  // ------------------------------------------------------------------
   // Theme switching — swap Mapbox style on theme change
   // ------------------------------------------------------------------
   useEffect(() => {
@@ -171,6 +227,67 @@ export function MapView() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme, mapReady]);
+
+  // ------------------------------------------------------------------
+  // On This Day — pulsing HTML markers
+  // ------------------------------------------------------------------
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapReady || onThisDayEvents.length === 0) return;
+
+    // Remove old markers
+    markersRef.current.forEach((m) => m.remove());
+    markersRef.current = [];
+
+    onThisDayEvents.forEach((event) => {
+      const el = document.createElement("div");
+      el.className = `on-this-day-marker${visitedIds.has(event.id) ? " on-this-day-marker--visited" : ""}`;
+      el.title = event.title;
+
+      el.addEventListener("click", (e) => {
+        e.stopPropagation();
+        flyToEvent(event);
+        onSelectEvent?.(event.id);
+      });
+
+      const marker = new mapboxgl.Marker({ element: el, anchor: "center" })
+        .setLngLat(event.coordinates as [number, number])
+        .addTo(map);
+
+      markersRef.current.push(marker);
+    });
+
+    return () => {
+      markersRef.current.forEach((m) => m.remove());
+      markersRef.current = [];
+    };
+  }, [mapReady, onThisDayEvents, visitedIds, flyToEvent, onSelectEvent]);
+
+  // ------------------------------------------------------------------
+  // Fly to selected event when it changes (e.g. from next/prev)
+  // ------------------------------------------------------------------
+  useEffect(() => {
+    if (!selectedEventId || !mapReady) return;
+    const event = onThisDayEvents.find((e) => e.id === selectedEventId);
+    if (event) {
+      flyToEvent(event);
+    }
+  }, [selectedEventId, mapReady, onThisDayEvents, flyToEvent]);
+
+  // ------------------------------------------------------------------
+  // Update visited state on markers
+  // ------------------------------------------------------------------
+  useEffect(() => {
+    markersRef.current.forEach((marker, i) => {
+      if (i < onThisDayEvents.length) {
+        const event = onThisDayEvents[i];
+        const el = marker.getElement();
+        if (visitedIds.has(event.id)) {
+          el.classList.add("on-this-day-marker--visited");
+        }
+      }
+    });
+  }, [visitedIds, onThisDayEvents]);
 
   // ------------------------------------------------------------------
   // Render

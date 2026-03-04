@@ -96,7 +96,7 @@ export default function EchoesChatPage() {
           className="w-full md:w-[380px] md:flex-shrink-0"
           style={{
             backgroundColor: "var(--atlas-white)",
-            borderRadius: "10px 10px 0 0",
+            borderRadius: "4px 4px 0 0",
             overflow: "hidden",
             boxShadow: "var(--atlas-shadow-sm)",
           }}
@@ -109,7 +109,7 @@ export default function EchoesChatPage() {
           className="flex-1 min-h-[400px] md:min-h-0"
           style={{
             backgroundColor: "var(--atlas-white)",
-            borderRadius: "0 0 10px 10px",
+            borderRadius: "0 0 4px 4px",
             borderTop: "1px solid var(--atlas-light-grey)",
             boxShadow: "var(--atlas-shadow-sm)",
           }}

@@ -28,7 +28,7 @@ export function MapControls() {
           style={{
             width: 44,
             height: 44,
-            borderRadius: 6,
+            borderRadius: 4,
             backgroundColor: isDark ? "#151518" : "var(--atlas-white)",
             boxShadow: "var(--atlas-shadow-md)",
             border: isDark ? "1px solid rgba(255,255,255,0.08)" : "none",

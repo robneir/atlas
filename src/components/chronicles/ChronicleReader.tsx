@@ -251,7 +251,7 @@ export function ChronicleReader({
                 color: "var(--atlas-mid-grey)",
                 border: "1px solid var(--atlas-light-grey)",
                 padding: "4px 12px",
-                borderRadius: 999,
+                borderRadius: 4,
                 letterSpacing: "0.03em",
               }}
             >

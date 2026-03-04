@@ -30,9 +30,9 @@ const TOPICS = [
 const pillBase: React.CSSProperties = {
   border: "1px solid rgba(255, 255, 255, 0.3)",
   padding: "8px 18px",
-  borderRadius: 999,
+  borderRadius: 4,
   color: "white",
-  fontFamily: "var(--font-source-sans), sans-serif",
+  fontFamily: "var(--font-ui)",
   fontSize: 14,
   background: "transparent",
   cursor: "pointer",
@@ -92,7 +92,7 @@ export function InterestPicker({ onComplete }: InterestPickerProps) {
       >
         <h2
           style={{
-            fontFamily: "var(--font-playfair), serif",
+            fontFamily: "var(--font-heading)",
             fontSize: 32,
             fontWeight: 700,
             color: "white",
@@ -104,7 +104,7 @@ export function InterestPicker({ onComplete }: InterestPickerProps) {
 
         <p
           style={{
-            fontFamily: "var(--font-source-sans), sans-serif",
+            fontFamily: "var(--font-ui)",
             fontSize: 16,
             color: "rgba(255, 255, 255, 0.6)",
             margin: "0 0 12px 0",
@@ -117,7 +117,7 @@ export function InterestPicker({ onComplete }: InterestPickerProps) {
         <div style={{ width: "100%", marginBottom: 8 }}>
           <p
             style={{
-              fontFamily: "var(--font-source-sans), sans-serif",
+              fontFamily: "var(--font-ui)",
               fontSize: 12,
               fontWeight: 600,
               textTransform: "uppercase",
@@ -152,7 +152,7 @@ export function InterestPicker({ onComplete }: InterestPickerProps) {
         <div style={{ width: "100%", marginBottom: 8 }}>
           <p
             style={{
-              fontFamily: "var(--font-source-sans), sans-serif",
+              fontFamily: "var(--font-ui)",
               fontSize: 12,
               fontWeight: 600,
               textTransform: "uppercase",
@@ -189,13 +189,13 @@ export function InterestPicker({ onComplete }: InterestPickerProps) {
           disabled={!canContinue}
           onClick={onComplete}
           style={{
-            fontFamily: "var(--font-source-sans), sans-serif",
+            fontFamily: "var(--font-ui)",
             fontSize: 15,
             fontWeight: 600,
             color: "white",
             background: "var(--atlas-accent, #D1401F)",
             border: "none",
-            borderRadius: 999,
+            borderRadius: 4,
             padding: "15px 40px",
             cursor: canContinue ? "pointer" : "not-allowed",
             marginTop: 20,

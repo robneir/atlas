@@ -50,7 +50,7 @@ export function EraExplorer() {
               animationDelay: `${index * 60}ms`,
               minWidth: 140,
               maxWidth: 140,
-              borderRadius: 10,
+              borderRadius: 4,
               padding: 16,
               cursor: "pointer",
               transition: "transform 0.2s ease, box-shadow 0.2s ease",

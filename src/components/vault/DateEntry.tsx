@@ -13,7 +13,7 @@ export function DateEntry({ date, events }: DateEntryProps) {
     <div
       style={{
         backgroundColor: "var(--atlas-white)",
-        borderRadius: 10,
+        borderRadius: 4,
         padding: 20,
         boxShadow: "var(--atlas-shadow-sm)",
       }}

@@ -1,5 +1,29 @@
 import type { HistoricalEvent } from "@/data/types";
 
+/**
+ * Deterministic seeded-random picker: returns 5–6 "On This Day" events
+ * for any given month/day combo. The seed ensures the same events appear
+ * each time a user visits on the same calendar day.
+ */
+export function getOnThisDayEvents(
+  month: number,
+  day: number
+): HistoricalEvent[] {
+  const seed = month * 31 + day;
+  // Simple deterministic shuffle using a seed-based LCG
+  const shuffled = [...EVENTS]
+    .map((event, i) => ({
+      event,
+      sort: ((seed * 2654435761 + i * 40503) >>> 0) % 1000,
+    }))
+    .sort((a, b) => a.sort - b.sort)
+    .map((x) => x.event);
+
+  // Pick 5 or 6 based on seed parity
+  const count = seed % 2 === 0 ? 6 : 5;
+  return shuffled.slice(0, Math.min(count, EVENTS.length));
+}
+
 export const EVENTS: HistoricalEvent[] = [
   // ── Ancient ──────────────────────────────────────────────────────────
   {

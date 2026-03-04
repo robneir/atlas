@@ -70,3 +70,104 @@ export interface Connection {
   toEventId: string;
   description: string;
 }
+
+/* ── Auth & Profile Types ─────────────────────────────── */
+
+export type UserRole = "explorer" | "contributor" | "historian";
+
+export interface DailyActivity {
+  date: string; // YYYY-MM-DD
+  count: number;
+}
+
+export interface MonthlyStats {
+  month: string; // YYYY-MM
+  starsReceived: number;
+  votesCast: number;
+}
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  password: string; // plain text (mock only)
+  displayName: string;
+  username: string;
+  avatarUrl?: string;
+  bio: string;
+  location: string;
+  role: UserRole;
+  joinedAt: string;
+  stats: {
+    totalContributions: number;
+    starsReceived: number;
+    votesCast: number;
+    currentStreak: number;
+    starredSuggestions: number;
+    chroniclesCreated: number;
+  };
+  activityHistory: DailyActivity[];
+  monthlyStats: MonthlyStats[];
+  contributionBreakdown: {
+    votes: number;
+    stars: number;
+    corrections: number;
+    chronicles: number;
+  };
+  milestones: string[];
+  starredItems: string[];
+  votes: Record<string, "up" | "down">;
+}
+
+export interface Milestone {
+  id: string;
+  label: string;
+  description: string;
+  icon: string;
+  threshold?: number;
+  field?: string;
+}
+
+/* ── Feed Post Types ─────────────────────────────────── */
+
+export type FeedPostType =
+  | "thought"
+  | "chronicle"
+  | "recreation"
+  | "map-annotation"
+  | "debate"
+  | "source"
+  | "correction"
+  | "team";
+
+export interface FeedPost {
+  id: string;
+  type: FeedPostType;
+  authorId: string;
+  isTeam: boolean;
+  content: string;
+  title?: string;
+  media?: {
+    type: "image" | "video" | "3d" | "document";
+    url: string;
+    thumbnail?: string;
+  };
+  metadata?: {
+    readTime?: string;
+    era?: Era;
+    coordinates?: [number, number];
+    location?: string;
+    chronicleId?: string;
+    pollFor?: number;
+    pollAgainst?: number;
+    argumentCount?: number;
+    sourceType?: string;
+    sourceOrigin?: string;
+    correctedField?: string;
+    correctedEventId?: string;
+    oldValue?: string;
+    newValue?: string;
+  };
+  score: number;
+  commentCount: number;
+  createdAt: string;
+}

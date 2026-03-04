@@ -13,7 +13,7 @@ export function EraTag({ era }: EraTagProps) {
       className="inline-flex items-center font-sans"
       style={{
         padding: "3px 10px",
-        borderRadius: 999,
+        borderRadius: 4,
         fontSize: 11,
         fontWeight: 700,
         textTransform: "uppercase",
