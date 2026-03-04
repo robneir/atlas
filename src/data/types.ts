@@ -126,3 +126,48 @@ export interface Milestone {
   threshold?: number;
   field?: string;
 }
+
+/* ── Feed Post Types ─────────────────────────────────── */
+
+export type FeedPostType =
+  | "thought"
+  | "chronicle"
+  | "recreation"
+  | "map-annotation"
+  | "debate"
+  | "source"
+  | "correction"
+  | "team";
+
+export interface FeedPost {
+  id: string;
+  type: FeedPostType;
+  authorId: string;
+  isTeam: boolean;
+  content: string;
+  title?: string;
+  media?: {
+    type: "image" | "video" | "3d" | "document";
+    url: string;
+    thumbnail?: string;
+  };
+  metadata?: {
+    readTime?: string;
+    era?: Era;
+    coordinates?: [number, number];
+    location?: string;
+    chronicleId?: string;
+    pollFor?: number;
+    pollAgainst?: number;
+    argumentCount?: number;
+    sourceType?: string;
+    sourceOrigin?: string;
+    correctedField?: string;
+    correctedEventId?: string;
+    oldValue?: string;
+    newValue?: string;
+  };
+  score: number;
+  commentCount: number;
+  createdAt: string;
+}
