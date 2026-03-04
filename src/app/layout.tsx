@@ -1,4 +1,3 @@
-// trigger redeploy
 import type { Metadata } from "next";
 import { Lora, Source_Sans_3 } from "next/font/google";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
